@@ -5,6 +5,7 @@ import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { Chart } from 'chart.js/auto';
 
 interface Post {
   id: number;
@@ -27,232 +28,148 @@ interface Post {
     TagModule,
   ],
   template: `
-    <div class="dashboard-container">
-      <!-- Statistics Cards -->
-      <div class="statistics-grid">
-        <p-card header="Total Posts" styleClass="stat-card">
-          <div class="stat-value">{{ totalPosts }}</div>
-          <div class="stat-change positive">
-            +{{ newPostsThisMonth }} this month
-          </div>
-        </p-card>
+    <div class="dashboard">
+      <h2 class="mb-4">My Dashboard</h2>
 
-        <p-card header="Total Views" styleClass="stat-card">
-          <div class="stat-value">{{ totalViews }}</div>
-          <div class="stat-change positive">
-            +{{ viewsChange }}% from last month
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <div class="card bg-primary text-white">
+            <div class="card-body">
+              <h5 class="card-title">My Posts</h5>
+              <h2 class="card-text">{{ stats.totalPosts }}</h2>
+            </div>
           </div>
-        </p-card>
-
-        <p-card header="Total Comments" styleClass="stat-card">
-          <div class="stat-value">{{ totalComments }}</div>
-          <div class="stat-change positive">
-            +{{ commentsChange }}% from last month
+        </div>
+        <div class="col-md-4">
+          <div class="card bg-success text-white">
+            <div class="card-body">
+              <h5 class="card-title">Total Comments</h5>
+              <h2 class="card-text">{{ stats.totalComments }}</h2>
+            </div>
           </div>
-        </p-card>
-
-        <p-card header="Draft Posts" styleClass="stat-card">
-          <div class="stat-value">{{ draftPosts }}</div>
-          <button
-            pButton
-            label="Continue Writing"
-            icon="pi pi-pencil"
-            class="p-button-text"
-            routerLink="/drafts"
-          ></button>
-        </p-card>
+        </div>
+        <div class="col-md-4">
+          <div class="card bg-info text-white">
+            <div class="card-body">
+              <h5 class="card-title">Post Views</h5>
+              <h2 class="card-text">{{ stats.totalViews }}</h2>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Charts -->
-      <div class="charts-grid">
-        <p-card header="Views Over Time" styleClass="chart-card">
-          <p-chart
-            type="line"
-            [data]="viewsChartData"
-            [options]="chartOptions"
-          ></p-chart>
-        </p-card>
-
-        <p-card header="Popular Posts" styleClass="chart-card">
-          <p-chart
-            type="doughnut"
-            [data]="popularPostsChartData"
-            [options]="chartOptions"
-          ></p-chart>
-        </p-card>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Recent Posts</h5>
+              <div class="list-group">
+                <a
+                  *ngFor="let post of recentPosts"
+                  href="#"
+                  class="list-group-item list-group-item-action"
+                >
+                  <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">{{ post.title }}</h6>
+                    <small>{{ post.date }}</small>
+                  </div>
+                  <small class="text-muted">{{ post.views }} views</small>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Post Performance</h5>
+              <canvas id="performanceChart"></canvas>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <!-- Recent Posts -->
-      <p-card header="Recent Posts" styleClass="recent-posts-card">
-        <p-table [value]="recentPosts" [rows]="5" [paginator]="true">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Title</th>
-              <th>Status</th>
-              <th>Views</th>
-              <th>Comments</th>
-              <th>Date</th>
-              <th>Actions</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-post>
-            <tr>
-              <td>{{ post.title }}</td>
-              <td>
-                <p-tag
-                  [value]="post.status"
-                  [severity]="
-                    post.status === 'published' ? 'success' : 'warning'
-                  "
-                ></p-tag>
-              </td>
-              <td>{{ post.views }}</td>
-              <td>{{ post.comments }}</td>
-              <td>{{ post.createdAt | date: 'medium' }}</td>
-              <td>
-                <button
-                  pButton
-                  icon="pi pi-pencil"
-                  class="p-button-rounded p-button-text"
-                  [routerLink]="['/posts', post.id, 'edit']"
-                ></button>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-card>
     </div>
   `,
   styles: [
     `
-      .dashboard-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
-
-      .statistics-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
+      .card-body {
+        padding: 1.5rem;
       }
-
-      .stat-card {
-        .stat-value {
-          font-size: 2rem;
-          font-weight: 600;
-          color: var(--primary-color);
-        }
-
-        .stat-change {
-          font-size: 0.875rem;
-          margin-top: 0.5rem;
-
-          &.positive {
-            color: var(--green-500);
-          }
-
-          &.negative {
-            color: var(--red-500);
-          }
-        }
+      .card-title {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        font-weight: 500;
       }
-
-      .charts-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 1rem;
-      }
-
-      .chart-card {
-        height: 300px;
-      }
-
-      .recent-posts-card {
-        margin-top: 1rem;
+      .card-text {
+        margin-bottom: 0;
+        font-size: 2rem;
+        font-weight: 600;
       }
     `,
   ],
 })
 export class DashboardComponent implements OnInit {
-  // Statistics
-  totalPosts = 25;
-  newPostsThisMonth = 5;
-  totalViews = 12500;
-  viewsChange = 15;
-  totalComments = 350;
-  commentsChange = 8;
-  draftPosts = 3;
-
-  // Chart Data
-  viewsChartData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'Views',
-        data: [1200, 1500, 1800, 2100, 2400, 2800],
-        borderColor: 'var(--primary-color)',
-        tension: 0.4,
-      },
-    ],
+  stats = {
+    totalPosts: 0,
+    totalComments: 0,
+    totalViews: 0,
   };
 
-  popularPostsChartData = {
-    labels: [
-      'Getting Started with Angular',
-      'TypeScript Best Practices',
-      'Micro Frontends',
-    ],
-    datasets: [
-      {
-        data: [300, 250, 200],
-        backgroundColor: [
-          'var(--primary-color)',
-          'var(--primary-400)',
-          'var(--primary-200)',
-        ],
-      },
-    ],
-  };
-
-  chartOptions = {
-    plugins: {
-      legend: {
-        position: 'bottom',
-      },
-    },
-    maintainAspectRatio: false,
-  };
-
-  // Recent Posts
-  recentPosts: Post[] = [
+  recentPosts = [
     {
-      id: 1,
       title: 'Getting Started with Angular',
-      status: 'published',
-      views: 1200,
-      comments: 45,
-      createdAt: '2024-01-15T10:30:00',
+      date: '2024-03-15',
+      views: 150,
     },
     {
-      id: 2,
-      title: 'TypeScript Best Practices',
-      status: 'published',
-      views: 850,
-      comments: 32,
-      createdAt: '2024-01-10T14:20:00',
+      title: 'Micro Frontends Best Practices',
+      date: '2024-03-14',
+      views: 120,
     },
     {
-      id: 3,
-      title: 'Micro Frontends Architecture',
-      status: 'draft',
-      views: 0,
-      comments: 0,
-      createdAt: '2024-01-05T09:15:00',
+      title: 'Building Responsive UIs',
+      date: '2024-03-13',
+      views: 95,
     },
   ];
 
   ngOnInit() {
-    // TODO: Load actual data from API
+    // TODO: Fetch real data from API
+    this.stats = {
+      totalPosts: 12,
+      totalComments: 45,
+      totalViews: 1250,
+    };
+
+    this.initializeChart();
+  }
+
+  private initializeChart() {
+    const ctx = document.getElementById(
+      'performanceChart',
+    ) as HTMLCanvasElement;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [
+          {
+            label: 'Post Views',
+            data: [65, 59, 80, 81, 56, 55],
+            borderColor: '#0d6efd',
+            tension: 0.4,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
   }
 }

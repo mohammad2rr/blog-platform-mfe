@@ -1,4 +1,8 @@
 import { Routes } from '@angular/router';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MyPostsComponent } from './components/my-posts/my-posts.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -8,10 +12,19 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('./components/dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent,
-      ),
+    component: DashboardComponent,
+  },
+  {
+    path: 'my-posts',
+    component: MyPostsComponent,
+  },
+  {
+    path: 'comments',
+    component: CommentsComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
   },
   {
     path: 'posts',
@@ -44,13 +57,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/drafts/drafts.component').then(
         (m) => m.DraftsComponent,
-      ),
-  },
-  {
-    path: 'profile',
-    loadComponent: () =>
-      import('./components/profile/profile.component').then(
-        (m) => m.ProfileComponent,
       ),
   },
   {
