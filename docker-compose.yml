@@ -7,6 +7,10 @@ services:
       dockerfile: docker/shell/Dockerfile
     ports:
       - "4200:80"
+    depends_on:
+      - admin-panel
+      - user-panel
+      - public-panel
     environment:
       - NODE_ENV=production
     networks:

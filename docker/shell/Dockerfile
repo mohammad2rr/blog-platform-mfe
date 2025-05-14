@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Build the application
-RUN npm run build:shell
+RUN npm run build:shell:prod
 
 # Production stage
 FROM nginx:alpine

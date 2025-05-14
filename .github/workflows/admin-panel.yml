@@ -1,15 +1,15 @@
-name: Shell Application CI/CD
+name: Admin Panel CI/CD
 
 on:
   push:
     branches: [main]
     paths:
-      - "apps/shell/**"
+      - "apps/admin-panel/**"
       - "shared/**"
   pull_request:
     branches: [main]
     paths:
-      - "apps/shell/**"
+      - "apps/admin-panel/**"
       - "shared/**"
 
 jobs:
@@ -31,14 +31,14 @@ jobs:
       - name: Build shared library
         run: npm run build:shared
 
-      - name: Build shell application
-        run: npm run build:shell
+      - name: Build admin panel
+        run: npm run build:admin
 
       - name: Run tests
-        run: npm run test -- --project=shell
+        run: npm run test -- --project=admin-panel
 
       - name: Run linting
-        run: npm run lint -- --project=shell
+        run: npm run lint -- --project=admin-panel
 
   deploy:
     needs: build-and-test
@@ -62,6 +62,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./docker/shell/Dockerfile
+          file: ./docker/admin-panel/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/shell:latest
+          tags: ghcr.io/${{ github.repository }}/admin-panel:latest

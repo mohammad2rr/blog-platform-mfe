@@ -15,7 +15,7 @@ RUN npm install
 COPY . .
 
 # Build the application
-RUN npm run build:admin
+RUN npm run build:admin:prod
 
 # Production stage
 FROM nginx:alpine
