@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-footer',
+  standalone: true,
+  imports: [CommonModule],
   template: `
     <footer class="bg-dark text-light py-4 mt-auto">
       <div class="container">
