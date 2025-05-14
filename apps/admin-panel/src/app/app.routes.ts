@@ -1,4 +1,9 @@
 import { Routes } from '@angular/router';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { PostsComponent } from './components/posts/posts.component';
+import { CategoriesComponent } from './components/categories/categories.component';
+import { UsersComponent } from './components/users/users.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 export const routes: Routes = [
   {
@@ -8,44 +13,29 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('./components/dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent,
-      ),
+    component: DashboardComponent,
   },
   {
     path: 'posts',
-    loadComponent: () =>
-      import('./components/posts/posts.component').then(
-        (m) => m.PostsComponent,
-      ),
+    component: PostsComponent,
   },
   {
     path: 'categories',
-    loadComponent: () =>
-      import('./components/categories/categories.component').then(
-        (m) => m.CategoriesComponent,
-      ),
+    component: CategoriesComponent,
   },
   {
     path: 'users',
-    loadComponent: () =>
-      import('./components/users/users.component').then(
-        (m) => m.UsersComponent,
-      ),
+    component: UsersComponent,
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
   },
   {
     path: 'comments',
     loadChildren: () =>
       import('./components/comments/comments.routes').then(
         (m) => m.COMMENTS_ROUTES,
-      ),
-  },
-  {
-    path: 'settings',
-    loadComponent: () =>
-      import('./components/settings/settings.component').then(
-        (m) => m.SettingsComponent,
       ),
   },
   {

@@ -7,45 +7,27 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4201/remoteEntry.js',
-        exposedModule: './Home',
-      }).then((m) => m.HomeComponent),
-  },
-  {
-    path: 'blog',
-    loadChildren: () =>
-      loadRemoteModule({
-        type: 'module',
-        remoteEntry: 'http://localhost:4201/remoteEntry.js',
-        exposedModule: './BlogList',
-      }).then((m) => m.BlogListComponent),
-  },
-  {
-    path: 'blog/:id',
-    loadChildren: () =>
-      loadRemoteModule({
-        type: 'module',
-        remoteEntry: 'http://localhost:4201/remoteEntry.js',
-        exposedModule: './BlogPost',
-      }).then((m) => m.BlogPostComponent),
+        remoteEntry: 'http://localhost:4203/remoteEntry.js',
+        exposedModule: './PublicModule',
+      }).then((m) => m.PublicModule),
   },
   {
     path: 'admin',
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4202/remoteEntry.js',
-        exposedModule: './AdminDashboard',
-      }).then((m) => m.AdminDashboardComponent),
+        remoteEntry: 'http://localhost:4201/remoteEntry.js',
+        exposedModule: './AdminModule',
+      }).then((m) => m.AdminModule),
   },
   {
-    path: 'profile',
+    path: 'user',
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4203/remoteEntry.js',
-        exposedModule: './UserProfile',
-      }).then((m) => m.UserProfileComponent),
+        remoteEntry: 'http://localhost:4202/remoteEntry.js',
+        exposedModule: './UserModule',
+      }).then((m) => m.UserModule),
   },
   {
     path: '**',

@@ -13,10 +13,9 @@ import { MessageService } from 'primeng/api';
 interface Post {
   id: number;
   title: string;
-  content: string;
   category: string;
-  status: string;
   author: string;
+  status: 'published' | 'draft';
   date: string;
 }
 
@@ -36,216 +35,78 @@ interface Post {
   ],
   providers: [MessageService],
   template: `
-    <div class="posts-container">
-      <div class="posts-header">
-        <h2>Posts Management</h2>
-        <button
-          pButton
-          label="New Post"
-          icon="pi pi-plus"
-          (click)="openNew()"
-        ></button>
+    <div class="posts">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Posts</h2>
+        <button class="btn btn-primary" (click)="openNewPostModal()">
+          <i class="fas fa-plus me-2"></i>New Post
+        </button>
       </div>
 
-      <p-toast></p-toast>
-
-      <p-table
-        [value]="posts"
-        [paginator]="true"
-        [rows]="10"
-        [showCurrentPageReport]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} posts"
-        [rowsPerPageOptions]="[10, 25, 50]"
-      >
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Author</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-post>
-          <tr>
-            <td>{{ post.title }}</td>
-            <td>{{ post.category }}</td>
-            <td>{{ post.author }}</td>
-            <td>
-              <span
-                [class]="'status-badge status-' + post.status.toLowerCase()"
-              >
-                {{ post.status }}
-              </span>
-            </td>
-            <td>{{ post.date }}</td>
-            <td>
-              <button
-                pButton
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-text"
-                (click)="editPost(post)"
-              ></button>
-              <button
-                pButton
-                icon="pi pi-trash"
-                class="p-button-rounded p-button-text p-button-danger"
-                (click)="deletePost(post)"
-              ></button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-
-      <p-dialog
-        [(visible)]="postDialog"
-        [style]="{ width: '450px' }"
-        header="Post Details"
-        [modal]="true"
-        styleClass="p-fluid"
-      >
-        <ng-template pTemplate="content">
-          <div class="field">
-            <label for="title">Title</label>
-            <input
-              type="text"
-              pInputText
-              id="title"
-              [(ngModel)]="post.title"
-              required
-              autofocus
-            />
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Author</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let post of posts">
+                  <td>{{ post.title }}</td>
+                  <td>{{ post.category }}</td>
+                  <td>{{ post.author }}</td>
+                  <td>
+                    <span
+                      class="badge"
+                      [ngClass]="{
+                        'bg-success': post.status === 'published',
+                        'bg-warning': post.status === 'draft',
+                      }"
+                    >
+                      {{ post.status }}
+                    </span>
+                  </td>
+                  <td>{{ post.date }}</td>
+                  <td>
+                    <button
+                      class="btn btn-sm btn-outline-primary me-2"
+                      (click)="editPost(post)"
+                    >
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="deletePost(post)"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="field">
-            <label for="content">Content</label>
-            <textarea
-              pInputTextarea
-              id="content"
-              [(ngModel)]="post.content"
-              rows="5"
-              required
-            ></textarea>
-          </div>
-          <div class="field">
-            <label for="category">Category</label>
-            <p-dropdown
-              id="category"
-              [options]="categories"
-              [(ngModel)]="post.category"
-              placeholder="Select a Category"
-            ></p-dropdown>
-          </div>
-          <div class="field">
-            <label for="status">Status</label>
-            <p-dropdown
-              id="status"
-              [options]="statuses"
-              [(ngModel)]="post.status"
-              placeholder="Select a Status"
-            ></p-dropdown>
-          </div>
-        </ng-template>
-
-        <ng-template pTemplate="footer">
-          <button
-            pButton
-            icon="pi pi-times"
-            label="Cancel"
-            class="p-button-text"
-            (click)="hideDialog()"
-          ></button>
-          <button
-            pButton
-            icon="pi pi-check"
-            label="Save"
-            (click)="savePost()"
-          ></button>
-        </ng-template>
-      </p-dialog>
-
-      <p-dialog
-        header="Confirm"
-        [(visible)]="deletePostDialog"
-        [style]="{ width: '450px' }"
-        [modal]="true"
-      >
-        <div class="confirmation-content">
-          <i
-            class="pi pi-exclamation-triangle p-mr-3"
-            style="font-size: 2rem"
-          ></i>
-          <span>Are you sure you want to delete this post?</span>
         </div>
-        <ng-template pTemplate="footer">
-          <button
-            pButton
-            icon="pi pi-times"
-            label="No"
-            class="p-button-text"
-            (click)="deletePostDialog = false"
-          ></button>
-          <button
-            pButton
-            icon="pi pi-check"
-            label="Yes"
-            class="p-button-text p-button-danger"
-            (click)="confirmDelete()"
-          ></button>
-        </ng-template>
-      </p-dialog>
+      </div>
     </div>
   `,
   styles: [
     `
-      .posts-container {
+      .posts {
         padding: 1rem;
       }
-
-      .posts-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
+      .table th {
+        font-weight: 600;
+        background-color: #f8f9fa;
       }
-
-      .status-badge {
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.875rem;
-        font-weight: 500;
-      }
-
-      .status-published {
-        background-color: var(--success-color);
-        color: white;
-      }
-
-      .status-draft {
-        background-color: var(--warning-color);
-        color: white;
-      }
-
-      .status-archived {
-        background-color: var(--secondary-color);
-        color: white;
-      }
-
-      .field {
-        margin-bottom: 1rem;
-      }
-
-      .field label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-      }
-
-      .confirmation-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
+      .badge {
+        padding: 0.5em 0.75em;
       }
     `,
   ],
@@ -255,10 +116,9 @@ export class PostsComponent implements OnInit {
   post: Post = {
     id: 0,
     title: '',
-    content: '',
     category: '',
-    status: '',
     author: '',
+    status: 'published',
     date: '',
   };
   postDialog = false;
@@ -283,88 +143,47 @@ export class PostsComponent implements OnInit {
   }
 
   loadPosts() {
-    // TODO: Replace with actual API call
+    // TODO: Fetch posts from API
     this.posts = [
       {
         id: 1,
         title: 'Getting Started with Angular',
-        content: 'Learn the basics of Angular...',
         category: 'Technology',
-        status: 'Published',
         author: 'John Doe',
-        date: '2024-01-15',
+        status: 'published',
+        date: '2024-03-15',
       },
       {
         id: 2,
-        title: 'Micro Frontends Best Practices',
-        content: 'Discover the best practices...',
+        title: 'Micro Frontends Architecture',
         category: 'Technology',
-        status: 'Draft',
         author: 'Jane Smith',
-        date: '2024-01-14',
+        status: 'draft',
+        date: '2024-03-14',
+      },
+      {
+        id: 3,
+        title: 'Best Practices for Web Development',
+        category: 'Development',
+        author: 'Mike Johnson',
+        status: 'published',
+        date: '2024-03-13',
       },
     ];
   }
 
-  openNew() {
-    this.post = {
-      id: 0,
-      title: '',
-      content: '',
-      category: '',
-      status: '',
-      author: 'Admin User',
-      date: new Date().toISOString().split('T')[0],
-    };
-    this.postDialog = true;
+  openNewPostModal() {
+    // TODO: Implement new post modal
+    console.log('Open new post modal');
   }
 
   editPost(post: Post) {
-    this.post = { ...post };
-    this.postDialog = true;
+    // TODO: Implement edit post functionality
+    console.log('Edit post:', post);
   }
 
   deletePost(post: Post) {
-    this.post = { ...post };
-    this.deletePostDialog = true;
-  }
-
-  hideDialog() {
-    this.postDialog = false;
-  }
-
-  savePost() {
-    if (this.post.id === 0) {
-      // Add new post
-      this.post.id = this.posts.length + 1;
-      this.posts.push({ ...this.post });
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Post created successfully',
-      });
-    } else {
-      // Update existing post
-      const index = this.posts.findIndex((p) => p.id === this.post.id);
-      this.posts[index] = { ...this.post };
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Post updated successfully',
-      });
-    }
-
-    this.posts = [...this.posts];
-    this.postDialog = false;
-  }
-
-  confirmDelete() {
-    this.posts = this.posts.filter((p) => p.id !== this.post.id);
-    this.deletePostDialog = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Post deleted successfully',
-    });
+    // TODO: Implement delete post functionality
+    console.log('Delete post:', post);
   }
 }

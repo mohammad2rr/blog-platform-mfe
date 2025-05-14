@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-footer',
-  standalone: true,
-  imports: [CommonModule],
   template: `
-    <footer class="footer mt-auto py-3 bg-dark text-light">
+    <footer class="bg-dark text-light py-4 mt-auto">
       <div class="container">
         <div class="row">
           <div class="col-md-4">
             <h5>About Us</h5>
-            <p>A modern blog platform built with Angular micro frontends.</p>
+            <p>
+              A modern blog platform built with micro-frontends architecture.
+            </p>
           </div>
           <div class="col-md-4">
             <h5>Quick Links</h5>
             <ul class="list-unstyled">
-              <li><a href="/" class="text-light">Home</a></li>
-              <li><a href="/blog" class="text-light">Blog</a></li>
-              <li><a href="/contact" class="text-light">Contact</a></li>
+              <li><a class="text-light" href="/">Home</a></li>
+              <li><a class="text-light" href="/blog">Blog</a></li>
+              <li><a class="text-light" href="/contact">Contact</a></li>
             </ul>
           </div>
           <div class="col-md-4">
@@ -39,28 +38,24 @@ import { CommonModule } from '@angular/common';
         </div>
         <hr class="mt-4" />
         <div class="text-center">
-          <p class="mb-0">
-            &copy; {{ currentYear }} Blog Platform. All rights reserved.
-          </p>
+          <p class="mb-0">&copy; 2024 Blog Platform. All rights reserved.</p>
         </div>
       </div>
     </footer>
   `,
   styles: [
     `
-      .footer {
-        margin-top: 3rem;
+      footer {
+        margin-top: auto;
       }
       .social-links a {
         font-size: 1.5rem;
-        transition: color 0.3s ease;
+        text-decoration: none;
       }
       .social-links a:hover {
-        color: #007bff !important;
+        opacity: 0.8;
       }
     `,
   ],
 })
-export class FooterComponent {
-  currentYear = new Date().getFullYear();
-}
+export class FooterComponent {}

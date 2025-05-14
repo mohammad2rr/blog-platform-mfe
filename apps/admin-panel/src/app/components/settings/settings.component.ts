@@ -60,301 +60,154 @@ interface SocialSettings {
   ],
   providers: [MessageService],
   template: `
-    <div class="settings-container">
-      <h2>Platform Settings</h2>
+    <div class="settings">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Settings</h2>
+        <button class="btn btn-primary" (click)="saveSettings()">
+          <i class="fas fa-save me-2"></i>Save Changes
+        </button>
+      </div>
 
-      <p-toast></p-toast>
-
-      <p-tabView>
-        <!-- General Settings -->
-        <p-tabPanel header="General">
-          <div class="card">
-            <h3>Site Information</h3>
-            <div class="field">
-              <label for="siteName">Site Name</label>
-              <input
-                type="text"
-                pInputText
-                id="siteName"
-                [(ngModel)]="siteSettings.siteName"
-              />
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">General Settings</h5>
             </div>
-            <div class="field">
-              <label for="siteDescription">Site Description</label>
-              <textarea
-                pInputTextarea
-                id="siteDescription"
-                [(ngModel)]="siteSettings.siteDescription"
-                rows="3"
-              ></textarea>
-            </div>
-            <div class="field">
-              <label for="siteUrl">Site URL</label>
-              <input
-                type="text"
-                pInputText
-                id="siteUrl"
-                [(ngModel)]="siteSettings.siteUrl"
-              />
-            </div>
-            <div class="field">
-              <label for="adminEmail">Admin Email</label>
-              <input
-                type="email"
-                pInputText
-                id="adminEmail"
-                [(ngModel)]="siteSettings.adminEmail"
-              />
-            </div>
-
-            <p-divider></p-divider>
-
-            <h3>Content Settings</h3>
-            <div class="field">
-              <label for="postsPerPage">Posts Per Page</label>
-              <input
-                type="number"
-                pInputText
-                id="postsPerPage"
-                [(ngModel)]="siteSettings.postsPerPage"
-              />
-            </div>
-            <div class="field-checkbox">
-              <p-inputSwitch
-                [(ngModel)]="siteSettings.allowComments"
-                id="allowComments"
-              ></p-inputSwitch>
-              <label for="allowComments">Allow Comments</label>
-            </div>
-            <div class="field-checkbox">
-              <p-inputSwitch
-                [(ngModel)]="siteSettings.moderateComments"
-                id="moderateComments"
-              ></p-inputSwitch>
-              <label for="moderateComments">Moderate Comments</label>
-            </div>
-
-            <p-divider></p-divider>
-
-            <h3>Regional Settings</h3>
-            <div class="field">
-              <label for="defaultLanguage">Default Language</label>
-              <p-dropdown
-                id="defaultLanguage"
-                [options]="languages"
-                [(ngModel)]="siteSettings.defaultLanguage"
-              ></p-dropdown>
-            </div>
-            <div class="field">
-              <label for="timezone">Timezone</label>
-              <p-dropdown
-                id="timezone"
-                [options]="timezones"
-                [(ngModel)]="siteSettings.timezone"
-              ></p-dropdown>
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="siteName" class="form-label">Site Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="siteName"
+                  [(ngModel)]="settings.siteName"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="siteDescription" class="form-label"
+                  >Site Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="siteDescription"
+                  rows="3"
+                  [(ngModel)]="settings.siteDescription"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="siteUrl" class="form-label">Site URL</label>
+                <input
+                  type="url"
+                  class="form-control"
+                  id="siteUrl"
+                  [(ngModel)]="settings.siteUrl"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="adminEmail" class="form-label">Admin Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="adminEmail"
+                  [(ngModel)]="settings.adminEmail"
+                />
+              </div>
             </div>
           </div>
-        </p-tabPanel>
+        </div>
 
-        <!-- Email Settings -->
-        <p-tabPanel header="Email">
-          <div class="card">
-            <h3>SMTP Configuration</h3>
-            <div class="field">
-              <label for="smtpHost">SMTP Host</label>
-              <input
-                type="text"
-                pInputText
-                id="smtpHost"
-                [(ngModel)]="emailSettings.smtpHost"
-              />
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Content Settings</h5>
             </div>
-            <div class="field">
-              <label for="smtpPort">SMTP Port</label>
-              <input
-                type="number"
-                pInputText
-                id="smtpPort"
-                [(ngModel)]="emailSettings.smtpPort"
-              />
-            </div>
-            <div class="field">
-              <label for="smtpUsername">SMTP Username</label>
-              <input
-                type="text"
-                pInputText
-                id="smtpUsername"
-                [(ngModel)]="emailSettings.smtpUsername"
-              />
-            </div>
-            <div class="field">
-              <label for="smtpPassword">SMTP Password</label>
-              <input
-                type="password"
-                pInputText
-                id="smtpPassword"
-                [(ngModel)]="emailSettings.smtpPassword"
-              />
-            </div>
-            <div class="field-checkbox">
-              <p-inputSwitch
-                [(ngModel)]="emailSettings.smtpSecure"
-                id="smtpSecure"
-              ></p-inputSwitch>
-              <label for="smtpSecure">Use Secure Connection (SSL/TLS)</label>
-            </div>
-
-            <p-divider></p-divider>
-
-            <h3>Email Settings</h3>
-            <div class="field">
-              <label for="fromEmail">From Email</label>
-              <input
-                type="email"
-                pInputText
-                id="fromEmail"
-                [(ngModel)]="emailSettings.fromEmail"
-              />
-            </div>
-            <div class="field">
-              <label for="fromName">From Name</label>
-              <input
-                type="text"
-                pInputText
-                id="fromName"
-                [(ngModel)]="emailSettings.fromName"
-              />
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="postsPerPage" class="form-label"
+                  >Posts Per Page</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="postsPerPage"
+                  [(ngModel)]="settings.postsPerPage"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="defaultLanguage" class="form-label"
+                  >Default Language</label
+                >
+                <select
+                  class="form-select"
+                  id="defaultLanguage"
+                  [(ngModel)]="settings.defaultLanguage"
+                >
+                  <option value="en">English</option>
+                  <option value="es">Spanish</option>
+                  <option value="fr">French</option>
+                  <option value="de">German</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="allowComments"
+                    [(ngModel)]="settings.allowComments"
+                  />
+                  <label class="form-check-label" for="allowComments"
+                    >Allow Comments</label
+                  >
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="moderateComments"
+                    [(ngModel)]="settings.moderateComments"
+                  />
+                  <label class="form-check-label" for="moderateComments"
+                    >Moderate Comments</label
+                  >
+                </div>
+              </div>
             </div>
           </div>
-        </p-tabPanel>
-
-        <!-- Social Media Settings -->
-        <p-tabPanel header="Social Media">
-          <div class="card">
-            <h3>Social Media Links</h3>
-            <div class="field">
-              <label for="facebookUrl">Facebook URL</label>
-              <input
-                type="text"
-                pInputText
-                id="facebookUrl"
-                [(ngModel)]="socialSettings.facebookUrl"
-              />
-            </div>
-            <div class="field">
-              <label for="twitterUrl">Twitter URL</label>
-              <input
-                type="text"
-                pInputText
-                id="twitterUrl"
-                [(ngModel)]="socialSettings.twitterUrl"
-              />
-            </div>
-            <div class="field">
-              <label for="instagramUrl">Instagram URL</label>
-              <input
-                type="text"
-                pInputText
-                id="instagramUrl"
-                [(ngModel)]="socialSettings.instagramUrl"
-              />
-            </div>
-            <div class="field">
-              <label for="linkedinUrl">LinkedIn URL</label>
-              <input
-                type="text"
-                pInputText
-                id="linkedinUrl"
-                [(ngModel)]="socialSettings.linkedinUrl"
-              />
-            </div>
-
-            <p-divider></p-divider>
-
-            <h3>Sharing Settings</h3>
-            <div class="field-checkbox">
-              <p-inputSwitch
-                [(ngModel)]="socialSettings.enableSocialSharing"
-                id="enableSocialSharing"
-              ></p-inputSwitch>
-              <label for="enableSocialSharing"
-                >Enable Social Sharing Buttons</label
-              >
-            </div>
-          </div>
-        </p-tabPanel>
-      </p-tabView>
-
-      <div class="settings-actions">
-        <button
-          pButton
-          label="Save Changes"
-          icon="pi pi-save"
-          (click)="saveSettings()"
-        ></button>
-        <button
-          pButton
-          label="Reset to Defaults"
-          icon="pi pi-refresh"
-          class="p-button-secondary"
-          (click)="resetSettings()"
-        ></button>
+        </div>
       </div>
     </div>
   `,
   styles: [
     `
-      .settings-container {
+      .settings {
         padding: 1rem;
       }
-
       .card {
-        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
-
-      .field {
-        margin-bottom: 1rem;
+      .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
       }
-
-      .field label {
-        display: block;
-        margin-bottom: 0.5rem;
+      .form-label {
         font-weight: 500;
-      }
-
-      .field-checkbox {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-      }
-
-      h3 {
-        margin: 1.5rem 0 1rem;
-        color: var(--text-color);
-      }
-
-      .settings-actions {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1rem;
-      }
-
-      :host ::ng-deep .p-tabview-panels {
-        padding: 1rem 0;
       }
     `,
   ],
 })
 export class SettingsComponent implements OnInit {
-  siteSettings: SiteSettings = {
+  settings: SiteSettings = {
     siteName: '',
     siteDescription: '',
     siteUrl: '',
     adminEmail: '',
     postsPerPage: 10,
     allowComments: true,
-    moderateComments: true,
+    moderateComments: false,
     defaultLanguage: 'en',
     timezone: 'UTC',
   };
@@ -398,15 +251,15 @@ export class SettingsComponent implements OnInit {
   }
 
   loadSettings() {
-    // TODO: Replace with actual API call
-    this.siteSettings = {
+    // TODO: Fetch settings from API
+    this.settings = {
       siteName: 'My Blog',
       siteDescription: 'A modern blog platform built with Angular',
       siteUrl: 'https://myblog.com',
       adminEmail: 'admin@myblog.com',
       postsPerPage: 10,
       allowComments: true,
-      moderateComments: true,
+      moderateComments: false,
       defaultLanguage: 'en',
       timezone: 'UTC',
     };
@@ -431,24 +284,7 @@ export class SettingsComponent implements OnInit {
   }
 
   saveSettings() {
-    // TODO: Replace with actual API call
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Settings saved successfully',
-    });
-  }
-
-  resetSettings() {
-    if (
-      confirm('Are you sure you want to reset all settings to default values?')
-    ) {
-      this.loadSettings();
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Settings Reset',
-        detail: 'All settings have been reset to default values',
-      });
-    }
+    // TODO: Implement save settings functionality
+    console.log('Save settings:', this.settings);
   }
 }
