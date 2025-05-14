@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/shared",
+    "declaration": true,
+    "types": ["node", "@angular/core", "@angular/common", "@angular/router"]
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts"
+  ]
+} 

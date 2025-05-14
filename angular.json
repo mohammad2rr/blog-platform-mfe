@@ -1,28 +1,28 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "apps",
   "projects": {
     "shell": {
       "projectType": "application",
       "schematics": {},
-      "root": "projects/shell",
-      "sourceRoot": "projects/shell/src",
+      "root": "apps/shell",
+      "sourceRoot": "apps/shell/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "projects/shell/src/main.ts",
+            "browser": "apps/shell/src/main.ts",
             "polyfills": ["zone.js"],
-            "tsConfig": "projects/shell/tsconfig.app.json",
+            "tsConfig": "apps/shell/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/shell/public"
+                "input": "apps/shell/public"
               }
             ],
-            "styles": ["projects/shell/src/styles.css"]
+            "styles": ["apps/shell/src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -67,14 +67,14 @@
           "builder": "@angular/build:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/shell/tsconfig.spec.json",
+            "tsConfig": "apps/shell/tsconfig.spec.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/shell/public"
+                "input": "apps/shell/public"
               }
             ],
-            "styles": ["projects/shell/src/styles.css"]
+            "styles": ["apps/shell/src/styles.css"]
           }
         }
       }
@@ -82,23 +82,23 @@
     "admin-panel": {
       "projectType": "application",
       "schematics": {},
-      "root": "projects/admin-panel",
-      "sourceRoot": "projects/admin-panel/src",
+      "root": "apps/admin-panel",
+      "sourceRoot": "apps/admin-panel/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "projects/admin-panel/src/main.ts",
+            "browser": "apps/admin-panel/src/main.ts",
             "polyfills": ["zone.js"],
-            "tsConfig": "projects/admin-panel/tsconfig.app.json",
+            "tsConfig": "apps/admin-panel/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/admin-panel/public"
+                "input": "apps/admin-panel/public"
               }
             ],
-            "styles": ["projects/admin-panel/src/styles.css"]
+            "styles": ["apps/admin-panel/src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -143,14 +143,14 @@
           "builder": "@angular/build:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/admin-panel/tsconfig.spec.json",
+            "tsConfig": "apps/admin-panel/tsconfig.spec.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/admin-panel/public"
+                "input": "apps/admin-panel/public"
               }
             ],
-            "styles": ["projects/admin-panel/src/styles.css"]
+            "styles": ["apps/admin-panel/src/styles.css"]
           }
         }
       }
@@ -158,23 +158,23 @@
     "user-panel": {
       "projectType": "application",
       "schematics": {},
-      "root": "projects/user-panel",
-      "sourceRoot": "projects/user-panel/src",
+      "root": "apps/user-panel",
+      "sourceRoot": "apps/user-panel/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "projects/user-panel/src/main.ts",
+            "browser": "apps/user-panel/src/main.ts",
             "polyfills": ["zone.js"],
-            "tsConfig": "projects/user-panel/tsconfig.app.json",
+            "tsConfig": "apps/user-panel/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/user-panel/public"
+                "input": "apps/user-panel/public"
               }
             ],
-            "styles": ["projects/user-panel/src/styles.css"]
+            "styles": ["apps/user-panel/src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -219,14 +219,14 @@
           "builder": "@angular/build:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/user-panel/tsconfig.spec.json",
+            "tsConfig": "apps/user-panel/tsconfig.spec.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/user-panel/public"
+                "input": "apps/user-panel/public"
               }
             ],
-            "styles": ["projects/user-panel/src/styles.css"]
+            "styles": ["apps/user-panel/src/styles.css"]
           }
         }
       }
@@ -234,23 +234,23 @@
     "public-panel": {
       "projectType": "application",
       "schematics": {},
-      "root": "projects/public-panel",
-      "sourceRoot": "projects/public-panel/src",
+      "root": "apps/public-panel",
+      "sourceRoot": "apps/public-panel/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "projects/public-panel/src/main.ts",
+            "browser": "apps/public-panel/src/main.ts",
             "polyfills": ["zone.js"],
-            "tsConfig": "projects/public-panel/tsconfig.app.json",
+            "tsConfig": "apps/public-panel/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/public-panel/public"
+                "input": "apps/public-panel/public"
               }
             ],
-            "styles": ["projects/public-panel/src/styles.css"]
+            "styles": ["apps/public-panel/src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -295,14 +295,14 @@
           "builder": "@angular/build:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/public-panel/tsconfig.spec.json",
+            "tsConfig": "apps/public-panel/tsconfig.spec.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/public-panel/public"
+                "input": "apps/public-panel/public"
               }
             ],
-            "styles": ["projects/public-panel/src/styles.css"]
+            "styles": ["apps/public-panel/src/styles.css"]
           }
         }
       }

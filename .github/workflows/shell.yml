@@ -1,0 +1,64 @@
+name: Shell Application CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "projects/shell/**"
+      - "shared/**"
+      - "package.json"
+      - "angular.json"
+  pull_request:
+    branches: [main]
+    paths:
+      - "projects/shell/**"
+      - "shared/**"
+      - "package.json"
+      - "angular.json"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build:shell
+
+      - name: Run tests
+        run: npm run test:shell
+
+      - name: Build Docker image
+        run: |
+          docker build -t blog-platform-shell:${{ github.sha }} -f docker/shell/Dockerfile .
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Docker image
+        run: |
+          docker tag blog-platform-shell:${{ github.sha }} ghcr.io/${{ github.repository }}/shell:${{ github.sha }}
+          docker tag blog-platform-shell:${{ github.sha }} ghcr.io/${{ github.repository }}/shell:latest
+          docker push ghcr.io/${{ github.repository }}/shell:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}/shell:latest
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/shell/browser
