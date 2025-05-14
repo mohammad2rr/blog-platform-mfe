@@ -15,6 +15,9 @@ module.exports = withModuleFederation({
     "@angular/common": { singleton: true, strictVersion: true },
     "@angular/router": { singleton: true, strictVersion: true },
     "@angular/forms": { singleton: true, strictVersion: true },
+    "@angular/animations": { singleton: true, strictVersion: true },
     rxjs: { singleton: true, strictVersion: true },
+    primeng: { singleton: true, strictVersion: true },
+    bootstrap: { singleton: true, strictVersion: true },
   },
 });
