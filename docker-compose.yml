@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  shell:
+    build:
+      context: .
+      dockerfile: docker/shell/Dockerfile
+    ports:
+      - "4200:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - blog-network
+
+  admin-panel:
+    build:
+      context: .
+      dockerfile: docker/admin-panel/Dockerfile
+    ports:
+      - "4201:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - blog-network
+
+  user-panel:
+    build:
+      context: .
+      dockerfile: docker/user-panel/Dockerfile
+    ports:
+      - "4202:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - blog-network
+
+  public-panel:
+    build:
+      context: .
+      dockerfile: docker/public-panel/Dockerfile
+    ports:
+      - "4203:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge

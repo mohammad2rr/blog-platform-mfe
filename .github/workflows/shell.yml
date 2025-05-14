@@ -4,14 +4,14 @@ on:
   push:
     branches: [main]
     paths:
-      - "projects/shell/**"
+      - "apps/shell/**"
       - "shared/**"
       - "package.json"
       - "angular.json"
   pull_request:
     branches: [main]
     paths:
-      - "projects/shell/**"
+      - "apps/shell/**"
       - "shared/**"
       - "package.json"
       - "angular.json"
@@ -39,8 +39,7 @@ jobs:
         run: npm run test:shell
 
       - name: Build Docker image
-        run: |
-          docker build -t blog-platform-shell:${{ github.sha }} -f docker/shell/Dockerfile .
+        run: docker build -t blog-platform-shell -f docker/shell/Dockerfile .
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -49,11 +48,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push Docker image
+      - name: Tag and push Docker image
         run: |
-          docker tag blog-platform-shell:${{ github.sha }} ghcr.io/${{ github.repository }}/shell:${{ github.sha }}
-          docker tag blog-platform-shell:${{ github.sha }} ghcr.io/${{ github.repository }}/shell:latest
-          docker push ghcr.io/${{ github.repository }}/shell:${{ github.sha }}
+          docker tag blog-platform-shell ghcr.io/${{ github.repository }}/shell:latest
           docker push ghcr.io/${{ github.repository }}/shell:latest
 
       - name: Deploy to GitHub Pages
@@ -61,4 +58,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/shell/browser
+          publish_dir: ./dist/apps/shell/browser

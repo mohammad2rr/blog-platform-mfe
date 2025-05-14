@@ -1,100 +1,72 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-root',
+  selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterOutlet],
   template: `
     <div class="admin-container">
-      <div class="sidebar">
+      <aside class="admin-sidebar">
         <div class="sidebar-header">
           <h3>Admin Panel</h3>
         </div>
         <nav class="sidebar-nav">
           <ul>
             <li>
-              <a routerLink="/admin/dashboard" routerLinkActive="active">
-                <i class="fas fa-tachometer-alt"></i> Dashboard
+              <a routerLink="dashboard" routerLinkActive="active">
+                <i class="pi pi-home"></i>
+                Dashboard
               </a>
             </li>
             <li>
-              <a routerLink="/admin/posts" routerLinkActive="active">
-                <i class="fas fa-file-alt"></i> Posts
+              <a routerLink="posts" routerLinkActive="active">
+                <i class="pi pi-file"></i>
+                Posts
               </a>
             </li>
             <li>
-              <a routerLink="/admin/categories" routerLinkActive="active">
-                <i class="fas fa-tags"></i> Categories
+              <a routerLink="users" routerLinkActive="active">
+                <i class="pi pi-users"></i>
+                Users
               </a>
             </li>
             <li>
-              <a routerLink="/admin/users" routerLinkActive="active">
-                <i class="fas fa-users"></i> Users
+              <a routerLink="categories" routerLinkActive="active">
+                <i class="pi pi-tags"></i>
+                Categories
               </a>
             </li>
             <li>
-              <a routerLink="/admin/comments" routerLinkActive="active">
-                <i class="fas fa-comments"></i> Comments
-              </a>
-            </li>
-            <li>
-              <a routerLink="/admin/settings" routerLinkActive="active">
-                <i class="fas fa-cog"></i> Settings
+              <a routerLink="settings" routerLinkActive="active">
+                <i class="pi pi-cog"></i>
+                Settings
               </a>
             </li>
           </ul>
         </nav>
-      </div>
-      <div class="main-content">
+      </aside>
+
+      <main class="admin-content">
         <header class="admin-header">
-          <div class="header-left">
-            <button class="btn btn-link" (click)="toggleSidebar()">
-              <i class="fas fa-bars"></i>
-            </button>
-            <h4>{{ currentPage }}</h4>
+          <div class="header-search">
+            <input type="text" placeholder="Search..." class="form-control" />
           </div>
-          <div class="header-right">
-            <div class="dropdown">
-              <button
-                class="btn btn-link dropdown-toggle"
-                type="button"
-                id="userDropdown"
-                data-bs-toggle="dropdown"
-              >
-                <img
-                  src="assets/images/admin-avatar.jpg"
-                  alt="Admin"
-                  class="avatar"
-                />
-                <span>Admin User</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><i class="fas fa-user"></i> Profile</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><i class="fas fa-cog"></i> Settings</a
-                  >
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><i class="fas fa-sign-out-alt"></i> Logout</a
-                  >
-                </li>
-              </ul>
-            </div>
+          <div class="header-actions">
+            <button class="btn btn-outline-primary">
+              <i class="pi pi-bell"></i>
+            </button>
+            <button class="btn btn-outline-primary">
+              <i class="pi pi-user"></i>
+            </button>
           </div>
         </header>
-        <main class="content">
+
+        <div class="content-wrapper">
           <router-outlet></router-outlet>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   `,
   styles: [
@@ -104,16 +76,17 @@ import { RouterModule } from '@angular/router';
         min-height: 100vh;
       }
 
-      .sidebar {
+      .admin-sidebar {
         width: 250px;
         background-color: #2c3e50;
         color: white;
-        transition: all 0.3s ease;
+        padding: 1rem;
       }
 
       .sidebar-header {
-        padding: 1.5rem;
+        padding: 1rem 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 1rem;
       }
 
       .sidebar-nav ul {
@@ -122,28 +95,30 @@ import { RouterModule } from '@angular/router';
         margin: 0;
       }
 
+      .sidebar-nav li {
+        margin-bottom: 0.5rem;
+      }
+
       .sidebar-nav a {
         display: flex;
         align-items: center;
-        padding: 1rem 1.5rem;
-        color: rgba(255, 255, 255, 0.8);
+        padding: 0.75rem 1rem;
+        color: white;
         text-decoration: none;
-        transition: all 0.3s ease;
+        border-radius: 4px;
+        transition: background-color 0.3s;
       }
 
       .sidebar-nav a:hover,
       .sidebar-nav a.active {
         background-color: rgba(255, 255, 255, 0.1);
-        color: white;
       }
 
       .sidebar-nav i {
         margin-right: 0.75rem;
-        width: 20px;
-        text-align: center;
       }
 
-      .main-content {
+      .admin-content {
         flex: 1;
         background-color: #f8f9fa;
       }
@@ -152,53 +127,24 @@ import { RouterModule } from '@angular/router';
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem 2rem;
+        padding: 1rem;
         background-color: white;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
-      .header-left {
+      .header-search {
+        width: 300px;
+      }
+
+      .header-actions {
         display: flex;
-        align-items: center;
-        gap: 1rem;
+        gap: 0.5rem;
       }
 
-      .header-right {
-        display: flex;
-        align-items: center;
-      }
-
-      .avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        margin-right: 0.5rem;
-      }
-
-      .content {
-        padding: 2rem;
-      }
-
-      @media (max-width: 768px) {
-        .sidebar {
-          position: fixed;
-          left: -250px;
-          height: 100vh;
-          z-index: 1000;
-        }
-
-        .sidebar.active {
-          left: 0;
-        }
+      .content-wrapper {
+        padding: 1.5rem;
       }
     `,
   ],
 })
-export class AppComponent {
-  currentPage = 'Dashboard';
-
-  toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar?.classList.toggle('active');
-  }
-}
+export class AppComponent {}

@@ -1,146 +1,89 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Chart } from 'chart.js/auto';
+import { ChartModule } from 'primeng/chart';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ChartModule],
   template: `
-    <div class="dashboard-container">
-      <div class="row g-4">
-        <!-- Stats Cards -->
-        <div class="col-md-3">
-          <div class="card stat-card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="card-subtitle mb-2 text-muted">Total Posts</h6>
-                  <h2 class="card-title mb-0">{{ stats.totalPosts }}</h2>
-                </div>
-                <div class="stat-icon">
-                  <i class="fas fa-file-alt"></i>
-                </div>
-              </div>
-              <div class="stat-trend up">
-                <i class="fas fa-arrow-up"></i> 12%
-              </div>
-            </div>
+    <div class="dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="pi pi-users"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Total Users</h3>
+            <p class="stat-value">1,234</p>
+            <p class="stat-change positive">+12% from last month</p>
           </div>
         </div>
 
-        <div class="col-md-3">
-          <div class="card stat-card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="card-subtitle mb-2 text-muted">Total Users</h6>
-                  <h2 class="card-title mb-0">{{ stats.totalUsers }}</h2>
-                </div>
-                <div class="stat-icon">
-                  <i class="fas fa-users"></i>
-                </div>
-              </div>
-              <div class="stat-trend up">
-                <i class="fas fa-arrow-up"></i> 8%
-              </div>
-            </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="pi pi-file"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Total Posts</h3>
+            <p class="stat-value">567</p>
+            <p class="stat-change positive">+8% from last month</p>
           </div>
         </div>
 
-        <div class="col-md-3">
-          <div class="card stat-card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="card-subtitle mb-2 text-muted">Comments</h6>
-                  <h2 class="card-title mb-0">{{ stats.totalComments }}</h2>
-                </div>
-                <div class="stat-icon">
-                  <i class="fas fa-comments"></i>
-                </div>
-              </div>
-              <div class="stat-trend down">
-                <i class="fas fa-arrow-down"></i> 3%
-              </div>
-            </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="pi pi-comments"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Total Comments</h3>
+            <p class="stat-value">2,345</p>
+            <p class="stat-change positive">+15% from last month</p>
           </div>
         </div>
 
-        <div class="col-md-3">
-          <div class="card stat-card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="card-subtitle mb-2 text-muted">Page Views</h6>
-                  <h2 class="card-title mb-0">{{ stats.pageViews }}</h2>
-                </div>
-                <div class="stat-icon">
-                  <i class="fas fa-eye"></i>
-                </div>
-              </div>
-              <div class="stat-trend up">
-                <i class="fas fa-arrow-up"></i> 15%
-              </div>
-            </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="pi pi-eye"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Total Views</h3>
+            <p class="stat-value">45,678</p>
+            <p class="stat-change positive">+23% from last month</p>
           </div>
         </div>
+      </div>
 
-        <!-- Charts -->
-        <div class="col-md-8">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Traffic Overview</h5>
-              <canvas id="trafficChart"></canvas>
-            </div>
-          </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>User Growth</h3>
+          <p-chart
+            type="line"
+            [data]="userGrowthData"
+            [options]="chartOptions"
+          ></p-chart>
         </div>
 
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">User Distribution</h5>
-              <canvas id="userChart"></canvas>
-            </div>
-          </div>
+        <div class="chart-card">
+          <h3>Post Categories</h3>
+          <p-chart
+            type="pie"
+            [data]="categoryData"
+            [options]="chartOptions"
+          ></p-chart>
         </div>
+      </div>
 
-        <!-- Recent Activity -->
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Recent Posts</h5>
-              <div class="list-group list-group-flush">
-                <div class="list-group-item" *ngFor="let post of recentPosts">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1">{{ post.title }}</h6>
-                    <small>{{ post.date }}</small>
-                  </div>
-                  <p class="mb-1">{{ post.excerpt }}</p>
-                  <small>By {{ post.author }}</small>
-                </div>
-              </div>
+      <div class="recent-activity">
+        <h3>Recent Activity</h3>
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let activity of recentActivities">
+            <div class="activity-icon">
+              <i [class]="activity.icon"></i>
             </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Recent Comments</h5>
-              <div class="list-group list-group-flush">
-                <div
-                  class="list-group-item"
-                  *ngFor="let comment of recentComments"
-                >
-                  <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1">{{ comment.author }}</h6>
-                    <small>{{ comment.date }}</small>
-                  </div>
-                  <p class="mb-1">{{ comment.content }}</p>
-                  <small>On: {{ comment.postTitle }}</small>
-                </div>
-              </div>
+            <div class="activity-content">
+              <p class="activity-text">{{ activity.text }}</p>
+              <p class="activity-time">{{ activity.time }}</p>
             </div>
           </div>
         </div>
@@ -149,9 +92,23 @@ import { Chart } from 'chart.js/auto';
   `,
   styles: [
     `
+      .dashboard {
+        padding: 1rem;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
       .stat-card {
-        border: none;
-        border-radius: 10px;
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
@@ -159,141 +116,209 @@ import { Chart } from 'chart.js/auto';
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        background-color: rgba(0, 123, 255, 0.1);
+        background: var(--primary-color);
+        color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
-        color: #007bff;
+        margin-right: 1rem;
       }
 
-      .stat-trend {
-        margin-top: 0.5rem;
+      .stat-icon i {
+        font-size: 1.5rem;
+      }
+
+      .stat-content h3 {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #6c757d;
+      }
+
+      .stat-value {
+        margin: 0.5rem 0;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .stat-change {
+        margin: 0;
         font-size: 0.875rem;
       }
 
-      .stat-trend.up {
-        color: #28a745;
+      .stat-change.positive {
+        color: var(--success-color);
       }
 
-      .stat-trend.down {
-        color: #dc3545;
+      .stat-change.negative {
+        color: var(--danger-color);
       }
 
-      .list-group-item {
-        border-left: none;
-        border-right: none;
-        padding: 1rem 0;
+      .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
       }
 
-      .list-group-item:first-child {
-        border-top: none;
+      .chart-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
-      .list-group-item:last-child {
-        border-bottom: none;
+      .chart-card h3 {
+        margin: 0 0 1rem 0;
+      }
+
+      .recent-activity {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .recent-activity h3 {
+        margin: 0 0 1rem 0;
+      }
+
+      .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .activity-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        border-radius: 4px;
+        background: #f8f9fa;
+      }
+
+      .activity-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+      }
+
+      .activity-content {
+        flex: 1;
+      }
+
+      .activity-text {
+        margin: 0;
+        font-size: 0.875rem;
+      }
+
+      .activity-time {
+        margin: 0.25rem 0 0 0;
+        font-size: 0.75rem;
+        color: #6c757d;
       }
     `,
   ],
 })
 export class DashboardComponent implements OnInit {
-  stats = {
-    totalPosts: 156,
-    totalUsers: 2345,
-    totalComments: 892,
-    pageViews: '12.5K',
-  };
-
-  recentPosts = [
+  userGrowthData: any;
+  categoryData: any;
+  chartOptions: any;
+  recentActivities = [
     {
-      title: 'Getting Started with Angular',
-      excerpt:
-        'Learn the basics of Angular and start building amazing web applications.',
-      author: 'John Doe',
-      date: '2 hours ago',
+      icon: 'pi pi-user-plus',
+      text: 'New user registered',
+      time: '5 minutes ago',
     },
     {
-      title: 'Micro Frontends Best Practices',
-      excerpt:
-        'Discover the best practices for implementing micro frontends in your applications.',
-      author: 'Jane Smith',
-      date: '5 hours ago',
+      icon: 'pi pi-file',
+      text: 'New post published',
+      time: '1 hour ago',
     },
     {
-      title: 'Modern Web Development',
-      excerpt: 'Explore the latest trends and technologies in web development.',
-      author: 'Mike Johnson',
-      date: '1 day ago',
-    },
-  ];
-
-  recentComments = [
-    {
-      author: 'Sarah Wilson',
-      content: 'Great article! Very informative and well-written.',
-      postTitle: 'Getting Started with Angular',
-      date: '1 hour ago',
+      icon: 'pi pi-comments',
+      text: 'New comment on "Getting Started with Angular"',
+      time: '2 hours ago',
     },
     {
-      author: 'David Brown',
-      content:
-        'Thanks for sharing these insights. Looking forward to more content like this!',
-      postTitle: 'Micro Frontends Best Practices',
-      date: '3 hours ago',
-    },
-    {
-      author: 'Emily Davis',
-      content:
-        'This is exactly what I was looking for. Clear and concise explanation.',
-      postTitle: 'Modern Web Development',
-      date: '1 day ago',
+      icon: 'pi pi-heart',
+      text: 'Post "Micro Frontends" received 10 likes',
+      time: '3 hours ago',
     },
   ];
 
   ngOnInit() {
-    this.initTrafficChart();
-    this.initUserChart();
+    this.initCharts();
   }
 
-  private initTrafficChart() {
-    const ctx = document.getElementById('trafficChart') as HTMLCanvasElement;
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [
-          {
-            label: 'Page Views',
-            data: [12000, 19000, 15000, 25000, 22000, 30000],
-            borderColor: '#007bff',
-            tension: 0.4,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    });
-  }
+  initCharts() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue(
+      '--text-color-secondary',
+    );
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-  private initUserChart() {
-    const ctx = document.getElementById('userChart') as HTMLCanvasElement;
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['New Users', 'Returning Users', 'Active Users'],
-        datasets: [
-          {
-            data: [30, 40, 30],
-            backgroundColor: ['#007bff', '#28a745', '#ffc107'],
+    this.userGrowthData = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label: 'Users',
+          data: [65, 59, 80, 81, 56, 55, 40],
+          fill: false,
+          borderColor: documentStyle.getPropertyValue('--primary-color'),
+          tension: 0.4,
+        },
+      ],
+    };
+
+    this.categoryData = {
+      labels: ['Technology', 'Lifestyle', 'Travel', 'Food', 'Health'],
+      datasets: [
+        {
+          data: [300, 50, 100, 40, 120],
+          backgroundColor: [
+            documentStyle.getPropertyValue('--primary-color'),
+            documentStyle.getPropertyValue('--success-color'),
+            documentStyle.getPropertyValue('--info-color'),
+            documentStyle.getPropertyValue('--warning-color'),
+            documentStyle.getPropertyValue('--danger-color'),
+          ],
+        },
+      ],
+    };
+
+    this.chartOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor,
           },
-        ],
+        },
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+          },
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+          },
+        },
       },
-    });
+    };
   }
 }

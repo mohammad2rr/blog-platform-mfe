@@ -5,21 +5,61 @@ const {
 module.exports = withModuleFederation({
   name: "admin-panel",
   exposes: {
-    "./AdminDashboard":
-      "./projects/admin-panel/src/app/components/dashboard/dashboard.component.ts",
-    "./AdminPosts":
-      "./projects/admin-panel/src/app/components/posts/posts.component.ts",
-    "./AdminUsers":
-      "./projects/admin-panel/src/app/components/users/users.component.ts",
+    "./AdminModule": "./apps/admin-panel/src/app/app.component.ts",
+    "./DashboardComponent":
+      "./apps/admin-panel/src/app/components/dashboard/dashboard.component.ts",
   },
   shared: {
-    "@angular/core": { singleton: true, strictVersion: true },
-    "@angular/common": { singleton: true, strictVersion: true },
-    "@angular/router": { singleton: true, strictVersion: true },
-    "@angular/forms": { singleton: true, strictVersion: true },
-    "@angular/animations": { singleton: true, strictVersion: true },
-    rxjs: { singleton: true, strictVersion: true },
-    bootstrap: { singleton: true, strictVersion: true },
-    primeng: { singleton: true, strictVersion: true },
+    "@angular/core": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^19.0.0",
+    },
+    "@angular/common": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^19.0.0",
+    },
+    "@angular/router": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^19.0.0",
+    },
+    "@angular/forms": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^19.0.0",
+    },
+    "@angular/animations": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^19.0.0",
+    },
+    "@angular/platform-browser": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^19.0.0",
+    },
+    "@angular/platform-browser-dynamic": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^19.0.0",
+    },
+    rxjs: { singleton: true, strictVersion: true, requiredVersion: "~7.8.0" },
+    bootstrap: {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^5.3.0",
+    },
+    primeng: {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^19.0.0",
+    },
+    "zone.js": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "~0.15.0",
+    },
   },
 });

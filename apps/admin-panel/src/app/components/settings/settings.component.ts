@@ -1,16 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextarea } from 'primeng/inputtextarea';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { TabViewModule } from 'primeng/tabview';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { DividerModule } from 'primeng/divider';
 
-interface GeneralSettings {
-  siteTitle: string;
+interface SiteSettings {
+  siteName: string;
   siteDescription: string;
   siteUrl: string;
   adminEmail: string;
   postsPerPage: number;
   allowComments: boolean;
   moderateComments: boolean;
-  defaultPostStatus: 'draft' | 'published';
+  defaultLanguage: string;
+  timezone: string;
+}
+
+interface EmailSettings {
+  smtpHost: string;
+  smtpPort: number;
+  smtpUsername: string;
+  smtpPassword: string;
+  smtpSecure: boolean;
+  fromEmail: string;
+  fromName: string;
 }
 
 interface SocialSettings {
@@ -21,325 +42,263 @@ interface SocialSettings {
   enableSocialSharing: boolean;
 }
 
-interface EmailSettings {
-  smtpHost: string;
-  smtpPort: number;
-  smtpUsername: string;
-  smtpPassword: string;
-  smtpEncryption: 'none' | 'tls' | 'ssl';
-  fromEmail: string;
-  fromName: string;
-}
-
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CardModule,
+    InputTextModule,
+    InputTextarea,
+    ButtonModule,
+    ToastModule,
+    TabViewModule,
+    DropdownModule,
+    InputSwitchModule,
+    DividerModule,
+  ],
+  providers: [MessageService],
   template: `
     <div class="settings-container">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0">Platform Settings</h4>
-        <button class="btn btn-primary" (click)="saveAllSettings()">
-          <i class="fas fa-save"></i> Save All Changes
-        </button>
-      </div>
+      <h2>Platform Settings</h2>
 
-      <div class="row">
+      <p-toast></p-toast>
+
+      <p-tabView>
         <!-- General Settings -->
-        <div class="col-md-6 mb-4">
+        <p-tabPanel header="General">
           <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">General Settings</h5>
+            <h3>Site Information</h3>
+            <div class="field">
+              <label for="siteName">Site Name</label>
+              <input
+                type="text"
+                pInputText
+                id="siteName"
+                [(ngModel)]="siteSettings.siteName"
+              />
             </div>
-            <div class="card-body">
-              <form (ngSubmit)="saveGeneralSettings()">
-                <div class="mb-3">
-                  <label for="siteTitle" class="form-label">Site Title</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="siteTitle"
-                    [(ngModel)]="generalSettings.siteTitle"
-                    name="siteTitle"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="siteDescription" class="form-label"
-                    >Site Description</label
-                  >
-                  <textarea
-                    class="form-control"
-                    id="siteDescription"
-                    [(ngModel)]="generalSettings.siteDescription"
-                    name="siteDescription"
-                    rows="3"
-                  ></textarea>
-                </div>
-                <div class="mb-3">
-                  <label for="siteUrl" class="form-label">Site URL</label>
-                  <input
-                    type="url"
-                    class="form-control"
-                    id="siteUrl"
-                    [(ngModel)]="generalSettings.siteUrl"
-                    name="siteUrl"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="adminEmail" class="form-label">Admin Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="adminEmail"
-                    [(ngModel)]="generalSettings.adminEmail"
-                    name="adminEmail"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="postsPerPage" class="form-label"
-                    >Posts Per Page</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="postsPerPage"
-                    [(ngModel)]="generalSettings.postsPerPage"
-                    name="postsPerPage"
-                    min="1"
-                    max="50"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="allowComments"
-                      [(ngModel)]="generalSettings.allowComments"
-                      name="allowComments"
-                    />
-                    <label class="form-check-label" for="allowComments"
-                      >Allow Comments</label
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="moderateComments"
-                      [(ngModel)]="generalSettings.moderateComments"
-                      name="moderateComments"
-                    />
-                    <label class="form-check-label" for="moderateComments"
-                      >Moderate Comments</label
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="defaultPostStatus" class="form-label"
-                    >Default Post Status</label
-                  >
-                  <select
-                    class="form-select"
-                    id="defaultPostStatus"
-                    [(ngModel)]="generalSettings.defaultPostStatus"
-                    name="defaultPostStatus"
-                  >
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                  Save General Settings
-                </button>
-              </form>
+            <div class="field">
+              <label for="siteDescription">Site Description</label>
+              <textarea
+                pInputTextarea
+                id="siteDescription"
+                [(ngModel)]="siteSettings.siteDescription"
+                rows="3"
+              ></textarea>
             </div>
-          </div>
-        </div>
+            <div class="field">
+              <label for="siteUrl">Site URL</label>
+              <input
+                type="text"
+                pInputText
+                id="siteUrl"
+                [(ngModel)]="siteSettings.siteUrl"
+              />
+            </div>
+            <div class="field">
+              <label for="adminEmail">Admin Email</label>
+              <input
+                type="email"
+                pInputText
+                id="adminEmail"
+                [(ngModel)]="siteSettings.adminEmail"
+              />
+            </div>
 
-        <!-- Social Settings -->
-        <div class="col-md-6 mb-4">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">Social Media Settings</h5>
+            <p-divider></p-divider>
+
+            <h3>Content Settings</h3>
+            <div class="field">
+              <label for="postsPerPage">Posts Per Page</label>
+              <input
+                type="number"
+                pInputText
+                id="postsPerPage"
+                [(ngModel)]="siteSettings.postsPerPage"
+              />
             </div>
-            <div class="card-body">
-              <form (ngSubmit)="saveSocialSettings()">
-                <div class="mb-3">
-                  <div class="form-check mb-3">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="enableSocialSharing"
-                      [(ngModel)]="socialSettings.enableSocialSharing"
-                      name="enableSocialSharing"
-                    />
-                    <label class="form-check-label" for="enableSocialSharing"
-                      >Enable Social Sharing</label
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="facebookUrl" class="form-label"
-                    >Facebook URL</label
-                  >
-                  <input
-                    type="url"
-                    class="form-control"
-                    id="facebookUrl"
-                    [(ngModel)]="socialSettings.facebookUrl"
-                    name="facebookUrl"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="twitterUrl" class="form-label">Twitter URL</label>
-                  <input
-                    type="url"
-                    class="form-control"
-                    id="twitterUrl"
-                    [(ngModel)]="socialSettings.twitterUrl"
-                    name="twitterUrl"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="instagramUrl" class="form-label"
-                    >Instagram URL</label
-                  >
-                  <input
-                    type="url"
-                    class="form-control"
-                    id="instagramUrl"
-                    [(ngModel)]="socialSettings.instagramUrl"
-                    name="instagramUrl"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="linkedinUrl" class="form-label"
-                    >LinkedIn URL</label
-                  >
-                  <input
-                    type="url"
-                    class="form-control"
-                    id="linkedinUrl"
-                    [(ngModel)]="socialSettings.linkedinUrl"
-                    name="linkedinUrl"
-                  />
-                </div>
-                <button type="submit" class="btn btn-primary">
-                  Save Social Settings
-                </button>
-              </form>
+            <div class="field-checkbox">
+              <p-inputSwitch
+                [(ngModel)]="siteSettings.allowComments"
+                id="allowComments"
+              ></p-inputSwitch>
+              <label for="allowComments">Allow Comments</label>
+            </div>
+            <div class="field-checkbox">
+              <p-inputSwitch
+                [(ngModel)]="siteSettings.moderateComments"
+                id="moderateComments"
+              ></p-inputSwitch>
+              <label for="moderateComments">Moderate Comments</label>
+            </div>
+
+            <p-divider></p-divider>
+
+            <h3>Regional Settings</h3>
+            <div class="field">
+              <label for="defaultLanguage">Default Language</label>
+              <p-dropdown
+                id="defaultLanguage"
+                [options]="languages"
+                [(ngModel)]="siteSettings.defaultLanguage"
+              ></p-dropdown>
+            </div>
+            <div class="field">
+              <label for="timezone">Timezone</label>
+              <p-dropdown
+                id="timezone"
+                [options]="timezones"
+                [(ngModel)]="siteSettings.timezone"
+              ></p-dropdown>
             </div>
           </div>
-        </div>
+        </p-tabPanel>
 
         <!-- Email Settings -->
-        <div class="col-md-6 mb-4">
+        <p-tabPanel header="Email">
           <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">Email Settings</h5>
+            <h3>SMTP Configuration</h3>
+            <div class="field">
+              <label for="smtpHost">SMTP Host</label>
+              <input
+                type="text"
+                pInputText
+                id="smtpHost"
+                [(ngModel)]="emailSettings.smtpHost"
+              />
             </div>
-            <div class="card-body">
-              <form (ngSubmit)="saveEmailSettings()">
-                <div class="mb-3">
-                  <label for="smtpHost" class="form-label">SMTP Host</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="smtpHost"
-                    [(ngModel)]="emailSettings.smtpHost"
-                    name="smtpHost"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="smtpPort" class="form-label">SMTP Port</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="smtpPort"
-                    [(ngModel)]="emailSettings.smtpPort"
-                    name="smtpPort"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="smtpUsername" class="form-label"
-                    >SMTP Username</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="smtpUsername"
-                    [(ngModel)]="emailSettings.smtpUsername"
-                    name="smtpUsername"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="smtpPassword" class="form-label"
-                    >SMTP Password</label
-                  >
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="smtpPassword"
-                    [(ngModel)]="emailSettings.smtpPassword"
-                    name="smtpPassword"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="smtpEncryption" class="form-label"
-                    >SMTP Encryption</label
-                  >
-                  <select
-                    class="form-select"
-                    id="smtpEncryption"
-                    [(ngModel)]="emailSettings.smtpEncryption"
-                    name="smtpEncryption"
-                    required
-                  >
-                    <option value="none">None</option>
-                    <option value="tls">TLS</option>
-                    <option value="ssl">SSL</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="fromEmail" class="form-label">From Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="fromEmail"
-                    [(ngModel)]="emailSettings.fromEmail"
-                    name="fromEmail"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="fromName" class="form-label">From Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="fromName"
-                    [(ngModel)]="emailSettings.fromName"
-                    name="fromName"
-                    required
-                  />
-                </div>
-                <button type="submit" class="btn btn-primary">
-                  Save Email Settings
-                </button>
-              </form>
+            <div class="field">
+              <label for="smtpPort">SMTP Port</label>
+              <input
+                type="number"
+                pInputText
+                id="smtpPort"
+                [(ngModel)]="emailSettings.smtpPort"
+              />
+            </div>
+            <div class="field">
+              <label for="smtpUsername">SMTP Username</label>
+              <input
+                type="text"
+                pInputText
+                id="smtpUsername"
+                [(ngModel)]="emailSettings.smtpUsername"
+              />
+            </div>
+            <div class="field">
+              <label for="smtpPassword">SMTP Password</label>
+              <input
+                type="password"
+                pInputText
+                id="smtpPassword"
+                [(ngModel)]="emailSettings.smtpPassword"
+              />
+            </div>
+            <div class="field-checkbox">
+              <p-inputSwitch
+                [(ngModel)]="emailSettings.smtpSecure"
+                id="smtpSecure"
+              ></p-inputSwitch>
+              <label for="smtpSecure">Use Secure Connection (SSL/TLS)</label>
+            </div>
+
+            <p-divider></p-divider>
+
+            <h3>Email Settings</h3>
+            <div class="field">
+              <label for="fromEmail">From Email</label>
+              <input
+                type="email"
+                pInputText
+                id="fromEmail"
+                [(ngModel)]="emailSettings.fromEmail"
+              />
+            </div>
+            <div class="field">
+              <label for="fromName">From Name</label>
+              <input
+                type="text"
+                pInputText
+                id="fromName"
+                [(ngModel)]="emailSettings.fromName"
+              />
             </div>
           </div>
-        </div>
+        </p-tabPanel>
+
+        <!-- Social Media Settings -->
+        <p-tabPanel header="Social Media">
+          <div class="card">
+            <h3>Social Media Links</h3>
+            <div class="field">
+              <label for="facebookUrl">Facebook URL</label>
+              <input
+                type="text"
+                pInputText
+                id="facebookUrl"
+                [(ngModel)]="socialSettings.facebookUrl"
+              />
+            </div>
+            <div class="field">
+              <label for="twitterUrl">Twitter URL</label>
+              <input
+                type="text"
+                pInputText
+                id="twitterUrl"
+                [(ngModel)]="socialSettings.twitterUrl"
+              />
+            </div>
+            <div class="field">
+              <label for="instagramUrl">Instagram URL</label>
+              <input
+                type="text"
+                pInputText
+                id="instagramUrl"
+                [(ngModel)]="socialSettings.instagramUrl"
+              />
+            </div>
+            <div class="field">
+              <label for="linkedinUrl">LinkedIn URL</label>
+              <input
+                type="text"
+                pInputText
+                id="linkedinUrl"
+                [(ngModel)]="socialSettings.linkedinUrl"
+              />
+            </div>
+
+            <p-divider></p-divider>
+
+            <h3>Sharing Settings</h3>
+            <div class="field-checkbox">
+              <p-inputSwitch
+                [(ngModel)]="socialSettings.enableSocialSharing"
+                id="enableSocialSharing"
+              ></p-inputSwitch>
+              <label for="enableSocialSharing"
+                >Enable Social Sharing Buttons</label
+              >
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+
+      <div class="settings-actions">
+        <button
+          pButton
+          label="Save Changes"
+          icon="pi pi-save"
+          (click)="saveSettings()"
+        ></button>
+        <button
+          pButton
+          label="Reset to Defaults"
+          icon="pi pi-refresh"
+          class="p-button-secondary"
+          (click)="resetSettings()"
+        ></button>
       </div>
     </div>
   `,
@@ -350,30 +309,64 @@ interface EmailSettings {
       }
 
       .card {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        margin-bottom: 1rem;
       }
 
-      .card-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+      .field {
+        margin-bottom: 1rem;
       }
 
-      .form-label {
+      .field label {
+        display: block;
+        margin-bottom: 0.5rem;
         font-weight: 500;
+      }
+
+      .field-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        margin: 1.5rem 0 1rem;
+        color: var(--text-color);
+      }
+
+      .settings-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      :host ::ng-deep .p-tabview-panels {
+        padding: 1rem 0;
       }
     `,
   ],
 })
 export class SettingsComponent implements OnInit {
-  generalSettings: GeneralSettings = {
-    siteTitle: 'Blog Platform',
-    siteDescription: 'A modern blog platform built with Angular',
-    siteUrl: 'http://localhost:4200',
-    adminEmail: 'admin@example.com',
+  siteSettings: SiteSettings = {
+    siteName: '',
+    siteDescription: '',
+    siteUrl: '',
+    adminEmail: '',
     postsPerPage: 10,
     allowComments: true,
     moderateComments: true,
-    defaultPostStatus: 'draft',
+    defaultLanguage: 'en',
+    timezone: 'UTC',
+  };
+
+  emailSettings: EmailSettings = {
+    smtpHost: '',
+    smtpPort: 587,
+    smtpUsername: '',
+    smtpPassword: '',
+    smtpSecure: true,
+    fromEmail: '',
+    fromName: '',
   };
 
   socialSettings: SocialSettings = {
@@ -384,53 +377,78 @@ export class SettingsComponent implements OnInit {
     enableSocialSharing: true,
   };
 
-  emailSettings: EmailSettings = {
-    smtpHost: 'smtp.example.com',
-    smtpPort: 587,
-    smtpUsername: '',
-    smtpPassword: '',
-    smtpEncryption: 'tls',
-    fromEmail: 'noreply@example.com',
-    fromName: 'Blog Platform',
-  };
+  languages = [
+    { label: 'English', value: 'en' },
+    { label: 'Spanish', value: 'es' },
+    { label: 'French', value: 'fr' },
+    { label: 'German', value: 'de' },
+  ];
+
+  timezones = [
+    { label: 'UTC', value: 'UTC' },
+    { label: 'EST (UTC-5)', value: 'America/New_York' },
+    { label: 'CST (UTC-6)', value: 'America/Chicago' },
+    { label: 'PST (UTC-8)', value: 'America/Los_Angeles' },
+  ];
+
+  constructor(private messageService: MessageService) {}
 
   ngOnInit() {
-    // Load settings from API
     this.loadSettings();
   }
 
   loadSettings() {
-    // Simulated API call to load settings
-    // In a real application, this would make an HTTP request to your backend
-    console.log('Loading settings...');
+    // TODO: Replace with actual API call
+    this.siteSettings = {
+      siteName: 'My Blog',
+      siteDescription: 'A modern blog platform built with Angular',
+      siteUrl: 'https://myblog.com',
+      adminEmail: 'admin@myblog.com',
+      postsPerPage: 10,
+      allowComments: true,
+      moderateComments: true,
+      defaultLanguage: 'en',
+      timezone: 'UTC',
+    };
+
+    this.emailSettings = {
+      smtpHost: 'smtp.example.com',
+      smtpPort: 587,
+      smtpUsername: 'user@example.com',
+      smtpPassword: '',
+      smtpSecure: true,
+      fromEmail: 'noreply@myblog.com',
+      fromName: 'My Blog',
+    };
+
+    this.socialSettings = {
+      facebookUrl: 'https://facebook.com/myblog',
+      twitterUrl: 'https://twitter.com/myblog',
+      instagramUrl: 'https://instagram.com/myblog',
+      linkedinUrl: 'https://linkedin.com/company/myblog',
+      enableSocialSharing: true,
+    };
   }
 
-  saveGeneralSettings() {
-    // Simulated API call to save general settings
-    console.log('Saving general settings:', this.generalSettings);
-    // Show success message
-    alert('General settings saved successfully!');
+  saveSettings() {
+    // TODO: Replace with actual API call
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Settings saved successfully',
+    });
   }
 
-  saveSocialSettings() {
-    // Simulated API call to save social settings
-    console.log('Saving social settings:', this.socialSettings);
-    // Show success message
-    alert('Social settings saved successfully!');
-  }
-
-  saveEmailSettings() {
-    // Simulated API call to save email settings
-    console.log('Saving email settings:', this.emailSettings);
-    // Show success message
-    alert('Email settings saved successfully!');
-  }
-
-  saveAllSettings() {
-    this.saveGeneralSettings();
-    this.saveSocialSettings();
-    this.saveEmailSettings();
-    // Show success message
-    alert('All settings saved successfully!');
+  resetSettings() {
+    if (
+      confirm('Are you sure you want to reset all settings to default values?')
+    ) {
+      this.loadSettings();
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Settings Reset',
+        detail: 'All settings have been reset to default values',
+      });
+    }
   }
 }

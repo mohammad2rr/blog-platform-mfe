@@ -1,166 +1,199 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextarea } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 interface Post {
   id: number;
   title: string;
-  author: string;
+  content: string;
   category: string;
-  status: 'published' | 'draft' | 'pending';
+  status: string;
+  author: string;
   date: string;
-  views: number;
-  comments: number;
 }
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TableModule,
+    ButtonModule,
+    DialogModule,
+    InputTextModule,
+    InputTextarea,
+    DropdownModule,
+    ToastModule,
+  ],
+  providers: [MessageService],
   template: `
     <div class="posts-container">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0">Manage Posts</h4>
-        <button class="btn btn-primary" routerLink="new">
-          <i class="fas fa-plus"></i> New Post
-        </button>
+      <div class="posts-header">
+        <h2>Posts Management</h2>
+        <button
+          pButton
+          label="New Post"
+          icon="pi pi-plus"
+          (click)="openNew()"
+        ></button>
       </div>
 
-      <div class="card">
-        <div class="card-body">
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Search posts..."
-                  [(ngModel)]="searchQuery"
-                  (input)="filterPosts()"
-                />
-                <button class="btn btn-outline-secondary" type="button">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <select
-                class="form-select"
-                [(ngModel)]="selectedCategory"
-                (change)="filterPosts()"
-              >
-                <option value="">All Categories</option>
-                <option value="technology">Technology</option>
-                <option value="lifestyle">Lifestyle</option>
-                <option value="business">Business</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <select
-                class="form-select"
-                [(ngModel)]="selectedStatus"
-                (change)="filterPosts()"
-              >
-                <option value="">All Status</option>
-                <option value="published">Published</option>
-                <option value="draft">Draft</option>
-                <option value="pending">Pending</option>
-              </select>
-            </div>
-          </div>
+      <p-toast></p-toast>
 
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Author</th>
-                  <th>Category</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                  <th>Views</th>
-                  <th>Comments</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let post of filteredPosts">
-                  <td>{{ post.title }}</td>
-                  <td>{{ post.author }}</td>
-                  <td>
-                    <span class="badge bg-secondary">{{ post.category }}</span>
-                  </td>
-                  <td>
-                    <span
-                      class="badge"
-                      [ngClass]="{
-                        'bg-success': post.status === 'published',
-                        'bg-warning': post.status === 'pending',
-                        'bg-secondary': post.status === 'draft',
-                      }"
-                    >
-                      {{ post.status }}
-                    </span>
-                  </td>
-                  <td>{{ post.date }}</td>
-                  <td>{{ post.views }}</td>
-                  <td>{{ post.comments }}</td>
-                  <td>
-                    <div class="btn-group">
-                      <button
-                        class="btn btn-sm btn-outline-primary"
-                        [routerLink]="['edit', post.id]"
-                      >
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button
-                        class="btn btn-sm btn-outline-danger"
-                        (click)="deletePost(post.id)"
-                      >
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <p-table
+        [value]="posts"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} posts"
+        [rowsPerPageOptions]="[10, 25, 50]"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-post>
+          <tr>
+            <td>{{ post.title }}</td>
+            <td>{{ post.category }}</td>
+            <td>{{ post.author }}</td>
+            <td>
+              <span
+                [class]="'status-badge status-' + post.status.toLowerCase()"
+              >
+                {{ post.status }}
+              </span>
+            </td>
+            <td>{{ post.date }}</td>
+            <td>
+              <button
+                pButton
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text"
+                (click)="editPost(post)"
+              ></button>
+              <button
+                pButton
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="deletePost(post)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
 
-          <nav aria-label="Posts pagination" class="mt-4">
-            <ul class="pagination justify-content-center">
-              <li class="page-item" [class.disabled]="currentPage === 1">
-                <a
-                  class="page-link"
-                  href="#"
-                  (click)="changePage(currentPage - 1)"
-                  >Previous</a
-                >
-              </li>
-              <li
-                class="page-item"
-                *ngFor="let page of [].constructor(totalPages); let i = index"
-                [class.active]="currentPage === i + 1"
-              >
-                <a class="page-link" href="#" (click)="changePage(i + 1)">{{
-                  i + 1
-                }}</a>
-              </li>
-              <li
-                class="page-item"
-                [class.disabled]="currentPage === totalPages"
-              >
-                <a
-                  class="page-link"
-                  href="#"
-                  (click)="changePage(currentPage + 1)"
-                  >Next</a
-                >
-              </li>
-            </ul>
-          </nav>
+      <p-dialog
+        [(visible)]="postDialog"
+        [style]="{ width: '450px' }"
+        header="Post Details"
+        [modal]="true"
+        styleClass="p-fluid"
+      >
+        <ng-template pTemplate="content">
+          <div class="field">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              pInputText
+              id="title"
+              [(ngModel)]="post.title"
+              required
+              autofocus
+            />
+          </div>
+          <div class="field">
+            <label for="content">Content</label>
+            <textarea
+              pInputTextarea
+              id="content"
+              [(ngModel)]="post.content"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+          <div class="field">
+            <label for="category">Category</label>
+            <p-dropdown
+              id="category"
+              [options]="categories"
+              [(ngModel)]="post.category"
+              placeholder="Select a Category"
+            ></p-dropdown>
+          </div>
+          <div class="field">
+            <label for="status">Status</label>
+            <p-dropdown
+              id="status"
+              [options]="statuses"
+              [(ngModel)]="post.status"
+              placeholder="Select a Status"
+            ></p-dropdown>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+          <button
+            pButton
+            icon="pi pi-times"
+            label="Cancel"
+            class="p-button-text"
+            (click)="hideDialog()"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-check"
+            label="Save"
+            (click)="savePost()"
+          ></button>
+        </ng-template>
+      </p-dialog>
+
+      <p-dialog
+        header="Confirm"
+        [(visible)]="deletePostDialog"
+        [style]="{ width: '450px' }"
+        [modal]="true"
+      >
+        <div class="confirmation-content">
+          <i
+            class="pi pi-exclamation-triangle p-mr-3"
+            style="font-size: 2rem"
+          ></i>
+          <span>Are you sure you want to delete this post?</span>
         </div>
-      </div>
+        <ng-template pTemplate="footer">
+          <button
+            pButton
+            icon="pi pi-times"
+            label="No"
+            class="p-button-text"
+            (click)="deletePostDialog = false"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-check"
+            label="Yes"
+            class="p-button-text p-button-danger"
+            (click)="confirmDelete()"
+          ></button>
+        </ng-template>
+      </p-dialog>
     </div>
   `,
   styles: [
@@ -169,104 +202,169 @@ interface Post {
         padding: 1rem;
       }
 
-      .table th {
-        font-weight: 600;
-        background-color: #f8f9fa;
+      .posts-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
       }
 
-      .btn-group .btn {
+      .status-badge {
         padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
       }
 
-      .badge {
+      .status-published {
+        background-color: var(--success-color);
+        color: white;
+      }
+
+      .status-draft {
+        background-color: var(--warning-color);
+        color: white;
+      }
+
+      .status-archived {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+
+      .field {
+        margin-bottom: 1rem;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 0.5rem;
         font-weight: 500;
-        padding: 0.5em 0.75em;
+      }
+
+      .confirmation-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
       }
     `,
   ],
 })
 export class PostsComponent implements OnInit {
   posts: Post[] = [];
-  filteredPosts: Post[] = [];
-  searchQuery: string = '';
-  selectedCategory: string = '';
-  selectedStatus: string = '';
-  currentPage: number = 1;
-  postsPerPage: number = 10;
-  totalPages: number = 1;
+  post: Post = {
+    id: 0,
+    title: '',
+    content: '',
+    category: '',
+    status: '',
+    author: '',
+    date: '',
+  };
+  postDialog = false;
+  deletePostDialog = false;
+  categories = [
+    { label: 'Technology', value: 'Technology' },
+    { label: 'Lifestyle', value: 'Lifestyle' },
+    { label: 'Travel', value: 'Travel' },
+    { label: 'Food', value: 'Food' },
+    { label: 'Health', value: 'Health' },
+  ];
+  statuses = [
+    { label: 'Published', value: 'Published' },
+    { label: 'Draft', value: 'Draft' },
+    { label: 'Archived', value: 'Archived' },
+  ];
+
+  constructor(private messageService: MessageService) {}
 
   ngOnInit() {
-    // Simulated API call to get posts
+    this.loadPosts();
+  }
+
+  loadPosts() {
+    // TODO: Replace with actual API call
     this.posts = [
       {
         id: 1,
         title: 'Getting Started with Angular',
+        content: 'Learn the basics of Angular...',
+        category: 'Technology',
+        status: 'Published',
         author: 'John Doe',
-        category: 'technology',
-        status: 'published',
-        date: '2024-03-15',
-        views: 1234,
-        comments: 45,
+        date: '2024-01-15',
       },
       {
         id: 2,
         title: 'Micro Frontends Best Practices',
+        content: 'Discover the best practices...',
+        category: 'Technology',
+        status: 'Draft',
         author: 'Jane Smith',
-        category: 'technology',
-        status: 'published',
-        date: '2024-03-14',
-        views: 987,
-        comments: 32,
-      },
-      {
-        id: 3,
-        title: 'Modern Web Development',
-        author: 'Mike Johnson',
-        category: 'technology',
-        status: 'draft',
-        date: '2024-03-13',
-        views: 0,
-        comments: 0,
+        date: '2024-01-14',
       },
     ];
-    this.filterPosts();
   }
 
-  filterPosts() {
-    this.filteredPosts = this.posts.filter((post) => {
-      const matchesSearch = post.title
-        .toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
-      const matchesCategory =
-        !this.selectedCategory || post.category === this.selectedCategory;
-      const matchesStatus =
-        !this.selectedStatus || post.status === this.selectedStatus;
-      return matchesSearch && matchesCategory && matchesStatus;
+  openNew() {
+    this.post = {
+      id: 0,
+      title: '',
+      content: '',
+      category: '',
+      status: '',
+      author: 'Admin User',
+      date: new Date().toISOString().split('T')[0],
+    };
+    this.postDialog = true;
+  }
+
+  editPost(post: Post) {
+    this.post = { ...post };
+    this.postDialog = true;
+  }
+
+  deletePost(post: Post) {
+    this.post = { ...post };
+    this.deletePostDialog = true;
+  }
+
+  hideDialog() {
+    this.postDialog = false;
+  }
+
+  savePost() {
+    if (this.post.id === 0) {
+      // Add new post
+      this.post.id = this.posts.length + 1;
+      this.posts.push({ ...this.post });
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Post created successfully',
+      });
+    } else {
+      // Update existing post
+      const index = this.posts.findIndex((p) => p.id === this.post.id);
+      this.posts[index] = { ...this.post };
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Post updated successfully',
+      });
+    }
+
+    this.posts = [...this.posts];
+    this.postDialog = false;
+  }
+
+  confirmDelete() {
+    this.posts = this.posts.filter((p) => p.id !== this.post.id);
+    this.deletePostDialog = false;
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Post deleted successfully',
     });
-    this.totalPages = Math.ceil(this.filteredPosts.length / this.postsPerPage);
-    this.currentPage = 1;
-    this.updateDisplayedPosts();
-  }
-
-  changePage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updateDisplayedPosts();
-    }
-  }
-
-  private updateDisplayedPosts() {
-    const startIndex = (this.currentPage - 1) * this.postsPerPage;
-    this.filteredPosts = this.filteredPosts.slice(
-      startIndex,
-      startIndex + this.postsPerPage,
-    );
-  }
-
-  deletePost(id: number) {
-    if (confirm('Are you sure you want to delete this post?')) {
-      // Implement delete logic here
-      console.log('Deleting post:', id);
-    }
   }
 }

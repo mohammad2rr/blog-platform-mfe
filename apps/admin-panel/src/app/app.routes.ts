@@ -8,27 +8,31 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren: () =>
-      import('./components/dashboard/dashboard.routes').then(
-        (m) => m.DASHBOARD_ROUTES,
+    loadComponent: () =>
+      import('./components/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent,
       ),
   },
   {
     path: 'posts',
-    loadChildren: () =>
-      import('./components/posts/posts.routes').then((m) => m.POSTS_ROUTES),
+    loadComponent: () =>
+      import('./components/posts/posts.component').then(
+        (m) => m.PostsComponent,
+      ),
   },
   {
     path: 'categories',
-    loadChildren: () =>
-      import('./components/categories/categories.routes').then(
-        (m) => m.CATEGORIES_ROUTES,
+    loadComponent: () =>
+      import('./components/categories/categories.component').then(
+        (m) => m.CategoriesComponent,
       ),
   },
   {
     path: 'users',
-    loadChildren: () =>
-      import('./components/users/users.routes').then((m) => m.USERS_ROUTES),
+    loadComponent: () =>
+      import('./components/users/users.component').then(
+        (m) => m.UsersComponent,
+      ),
   },
   {
     path: 'comments',
@@ -39,9 +43,9 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
-    loadChildren: () =>
-      import('./components/settings/settings.routes').then(
-        (m) => m.SETTINGS_ROUTES,
+    loadComponent: () =>
+      import('./components/settings/settings.component').then(
+        (m) => m.SettingsComponent,
       ),
   },
   {

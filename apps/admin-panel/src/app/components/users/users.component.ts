@@ -1,257 +1,221 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { TagModule } from 'primeng/tag';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 interface User {
   id: number;
-  firstName: string;
-  lastName: string;
+  username: string;
   email: string;
-  role: 'admin' | 'editor' | 'author' | 'user';
-  status: 'active' | 'inactive' | 'suspended';
+  fullName: string;
+  roles: string[];
+  status: string;
   lastLogin: string;
-  createdAt: string;
 }
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TableModule,
+    ButtonModule,
+    DialogModule,
+    InputTextModule,
+    DropdownModule,
+    ToastModule,
+    TagModule,
+    MultiSelectModule,
+  ],
+  providers: [MessageService],
   template: `
     <div class="users-container">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0">Manage Users</h4>
-        <button class="btn btn-primary" (click)="openAddModal()">
-          <i class="fas fa-plus"></i> Add User
-        </button>
+      <div class="users-header">
+        <h2>Users Management</h2>
+        <button
+          pButton
+          label="New User"
+          icon="pi pi-plus"
+          (click)="openNew()"
+        ></button>
       </div>
 
-      <div class="card">
-        <div class="card-body">
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Search users..."
-                  [(ngModel)]="searchQuery"
-                  (input)="filterUsers()"
-                />
-                <button class="btn btn-outline-secondary" type="button">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <select
-                class="form-select"
-                [(ngModel)]="selectedRole"
-                (change)="filterUsers()"
+      <p-toast></p-toast>
+
+      <p-table
+        [value]="users"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
+        [rowsPerPageOptions]="[10, 25, 50]"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Status</th>
+            <th>Last Login</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <p-tag
+                *ngFor="let role of user.roles"
+                [value]="role"
+                [severity]="getRoleSeverity(role)"
+              ></p-tag>
+            </td>
+            <td>
+              <span
+                [class]="'status-badge status-' + user.status.toLowerCase()"
               >
-                <option value="">All Roles</option>
-                <option value="admin">Admin</option>
-                <option value="editor">Editor</option>
-                <option value="author">Author</option>
-                <option value="user">User</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <select
-                class="form-select"
-                [(ngModel)]="selectedStatus"
-                (change)="filterUsers()"
-              >
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="suspended">Suspended</option>
-              </select>
-            </div>
-          </div>
+                {{ user.status }}
+              </span>
+            </td>
+            <td>{{ user.lastLogin }}</td>
+            <td>
+              <button
+                pButton
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text"
+                (click)="editUser(user)"
+              ></button>
+              <button
+                pButton
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="deleteUser(user)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
 
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Last Login</th>
-                  <th>Created</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of filteredUsers">
-                  <td>{{ user.firstName }} {{ user.lastName }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>
-                    <span
-                      class="badge"
-                      [ngClass]="{
-                        'bg-danger': user.role === 'admin',
-                        'bg-warning': user.role === 'editor',
-                        'bg-info': user.role === 'author',
-                        'bg-secondary': user.role === 'user',
-                      }"
-                    >
-                      {{ user.role }}
-                    </span>
-                  </td>
-                  <td>
-                    <span
-                      class="badge"
-                      [ngClass]="{
-                        'bg-success': user.status === 'active',
-                        'bg-secondary': user.status === 'inactive',
-                        'bg-danger': user.status === 'suspended',
-                      }"
-                    >
-                      {{ user.status }}
-                    </span>
-                  </td>
-                  <td>{{ user.lastLogin }}</td>
-                  <td>{{ user.createdAt }}</td>
-                  <td>
-                    <div class="btn-group">
-                      <button
-                        class="btn btn-sm btn-outline-primary"
-                        (click)="openEditModal(user)"
-                      >
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button
-                        class="btn btn-sm btn-outline-danger"
-                        (click)="deleteUser(user.id)"
-                      >
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <p-dialog
+        [(visible)]="userDialog"
+        [style]="{ width: '450px' }"
+        header="User Details"
+        [modal]="true"
+        styleClass="p-fluid"
+      >
+        <ng-template pTemplate="content">
+          <div class="field">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              pInputText
+              id="username"
+              [(ngModel)]="user.username"
+              required
+              autofocus
+            />
           </div>
-        </div>
-      </div>
-    </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              pInputText
+              id="email"
+              [(ngModel)]="user.email"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <input
+              type="text"
+              pInputText
+              id="fullName"
+              [(ngModel)]="user.fullName"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="roles">Roles</label>
+            <p-multiSelect
+              id="roles"
+              [options]="availableRoles"
+              [(ngModel)]="user.roles"
+              [filter]="false"
+              placeholder="Select Roles"
+              [showToggleAll]="true"
+            ></p-multiSelect>
+          </div>
+          <div class="field">
+            <label for="status">Status</label>
+            <p-dropdown
+              id="status"
+              [options]="statuses"
+              [(ngModel)]="user.status"
+              placeholder="Select Status"
+            ></p-dropdown>
+          </div>
+        </ng-template>
 
-    <!-- User Modal -->
-    <div
-      class="modal fade"
-      id="userModal"
-      tabindex="-1"
-      aria-labelledby="userModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="userModalLabel">
-              {{ isEditMode ? 'Edit User' : 'Add User' }}
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form (ngSubmit)="onSubmit()">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="firstName" class="form-label">First Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="firstName"
-                    [(ngModel)]="userForm.firstName"
-                    name="firstName"
-                    required
-                  />
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="lastName" class="form-label">Last Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lastName"
-                    [(ngModel)]="userForm.lastName"
-                    name="lastName"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  [(ngModel)]="userForm.email"
-                  name="email"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="role" class="form-label">Role</label>
-                <select
-                  class="form-select"
-                  id="role"
-                  [(ngModel)]="userForm.role"
-                  name="role"
-                  required
-                >
-                  <option value="admin">Admin</option>
-                  <option value="editor">Editor</option>
-                  <option value="author">Author</option>
-                  <option value="user">User</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select
-                  class="form-select"
-                  id="status"
-                  [(ngModel)]="userForm.status"
-                  name="status"
-                  required
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="suspended">Suspended</option>
-                </select>
-              </div>
-              <div class="mb-3" *ngIf="!isEditMode">
-                <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  [(ngModel)]="userForm.password"
-                  name="password"
-                  required
-                />
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn btn-primary" (click)="onSubmit()">
-              {{ isEditMode ? 'Update' : 'Create' }}
-            </button>
-          </div>
+        <ng-template pTemplate="footer">
+          <button
+            pButton
+            icon="pi pi-times"
+            label="Cancel"
+            class="p-button-text"
+            (click)="hideDialog()"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-check"
+            label="Save"
+            (click)="saveUser()"
+          ></button>
+        </ng-template>
+      </p-dialog>
+
+      <p-dialog
+        header="Confirm"
+        [(visible)]="deleteUserDialog"
+        [style]="{ width: '450px' }"
+        [modal]="true"
+      >
+        <div class="confirmation-content">
+          <i
+            class="pi pi-exclamation-triangle p-mr-3"
+            style="font-size: 2rem"
+          ></i>
+          <span>Are you sure you want to delete this user?</span>
         </div>
-      </div>
+        <ng-template pTemplate="footer">
+          <button
+            pButton
+            icon="pi pi-times"
+            label="No"
+            class="p-button-text"
+            (click)="deleteUserDialog = false"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-check"
+            label="Yes"
+            class="p-button-text p-button-danger"
+            (click)="confirmDelete()"
+          ></button>
+        </ng-template>
+      </p-dialog>
     </div>
   `,
   styles: [
@@ -260,165 +224,185 @@ interface User {
         padding: 1rem;
       }
 
-      .table th {
-        font-weight: 600;
-        background-color: #f8f9fa;
+      .users-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
       }
 
-      .btn-group .btn {
+      .status-badge {
         padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
       }
 
-      .badge {
+      .status-active {
+        background-color: var(--success-color);
+        color: white;
+      }
+
+      .status-inactive {
+        background-color: var(--warning-color);
+        color: white;
+      }
+
+      .status-suspended {
+        background-color: var(--danger-color);
+        color: white;
+      }
+
+      .field {
+        margin-bottom: 1rem;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 0.5rem;
         font-weight: 500;
-        padding: 0.5em 0.75em;
+      }
+
+      .confirmation-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      :host ::ng-deep .p-tag {
+        margin-right: 0.5rem;
       }
     `,
   ],
 })
 export class UsersComponent implements OnInit {
   users: User[] = [];
-  filteredUsers: User[] = [];
-  searchQuery: string = '';
-  selectedRole: string = '';
-  selectedStatus: string = '';
-  isEditMode = false;
-  userForm = {
+  user: User = {
     id: 0,
-    firstName: '',
-    lastName: '',
+    username: '',
     email: '',
-    role: 'user' as User['role'],
-    status: 'active' as User['status'],
-    password: '',
+    fullName: '',
+    roles: [],
+    status: 'Active',
+    lastLogin: '',
   };
+  userDialog = false;
+  deleteUserDialog = false;
+  availableRoles = [
+    { label: 'Admin', value: 'Admin' },
+    { label: 'Editor', value: 'Editor' },
+    { label: 'Author', value: 'Author' },
+    { label: 'User', value: 'User' },
+  ];
+  statuses = [
+    { label: 'Active', value: 'Active' },
+    { label: 'Inactive', value: 'Inactive' },
+    { label: 'Suspended', value: 'Suspended' },
+  ];
+
+  constructor(private messageService: MessageService) {}
 
   ngOnInit() {
-    // Simulated API call to get users
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    // TODO: Replace with actual API call
     this.users = [
       {
         id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
+        username: 'johndoe',
         email: 'john.doe@example.com',
-        role: 'admin',
-        status: 'active',
-        lastLogin: '2024-03-15 14:30',
-        createdAt: '2024-01-01',
+        fullName: 'John Doe',
+        roles: ['Admin'],
+        status: 'Active',
+        lastLogin: '2024-01-15 14:30',
       },
       {
         id: 2,
-        firstName: 'Jane',
-        lastName: 'Smith',
+        username: 'janesmith',
         email: 'jane.smith@example.com',
-        role: 'editor',
-        status: 'active',
-        lastLogin: '2024-03-15 12:15',
-        createdAt: '2024-01-15',
-      },
-      {
-        id: 3,
-        firstName: 'Mike',
-        lastName: 'Johnson',
-        email: 'mike.johnson@example.com',
-        role: 'author',
-        status: 'inactive',
-        lastLogin: '2024-03-10 09:45',
-        createdAt: '2024-02-01',
+        fullName: 'Jane Smith',
+        roles: ['Editor', 'Author'],
+        status: 'Active',
+        lastLogin: '2024-01-14 09:15',
       },
     ];
-    this.filterUsers();
   }
 
-  filterUsers() {
-    this.filteredUsers = this.users.filter((user) => {
-      const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-      const matchesSearch =
-        fullName.includes(this.searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(this.searchQuery.toLowerCase());
-      const matchesRole = !this.selectedRole || user.role === this.selectedRole;
-      const matchesStatus =
-        !this.selectedStatus || user.status === this.selectedStatus;
-      return matchesSearch && matchesRole && matchesStatus;
-    });
+  getRoleSeverity(role: string): string {
+    switch (role) {
+      case 'Admin':
+        return 'danger';
+      case 'Editor':
+        return 'warning';
+      case 'Author':
+        return 'info';
+      default:
+        return 'success';
+    }
   }
 
-  openAddModal() {
-    this.isEditMode = false;
-    this.userForm = {
+  openNew() {
+    this.user = {
       id: 0,
-      firstName: '',
-      lastName: '',
+      username: '',
       email: '',
-      role: 'user',
-      status: 'active',
-      password: '',
+      fullName: '',
+      roles: [],
+      status: 'Active',
+      lastLogin: new Date().toISOString(),
     };
-    // Show modal using Bootstrap
-    const modal = document.getElementById('userModal');
-    if (modal) {
-      const bsModal = new (window as any).bootstrap.Modal(modal);
-      bsModal.show();
-    }
+    this.userDialog = true;
   }
 
-  openEditModal(user: User) {
-    this.isEditMode = true;
-    this.userForm = {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      role: user.role,
-      status: user.status,
-      password: '',
-    };
-    // Show modal using Bootstrap
-    const modal = document.getElementById('userModal');
-    if (modal) {
-      const bsModal = new (window as any).bootstrap.Modal(modal);
-      bsModal.show();
-    }
+  editUser(user: User) {
+    this.user = { ...user };
+    this.userDialog = true;
   }
 
-  onSubmit() {
-    if (this.isEditMode) {
-      // Update existing user
-      const index = this.users.findIndex((u) => u.id === this.userForm.id);
-      if (index !== -1) {
-        this.users[index] = {
-          ...this.users[index],
-          ...this.userForm,
-        };
-      }
-    } else {
+  deleteUser(user: User) {
+    this.user = { ...user };
+    this.deleteUserDialog = true;
+  }
+
+  hideDialog() {
+    this.userDialog = false;
+  }
+
+  saveUser() {
+    if (this.user.id === 0) {
       // Add new user
-      const newUser: User = {
-        id: this.users.length + 1,
-        firstName: this.userForm.firstName,
-        lastName: this.userForm.lastName,
-        email: this.userForm.email,
-        role: this.userForm.role,
-        status: this.userForm.status,
-        lastLogin: '-',
-        createdAt: new Date().toISOString().split('T')[0],
-      };
-      this.users.push(newUser);
+      this.user.id = this.users.length + 1;
+      this.users.push({ ...this.user });
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'User created successfully',
+      });
+    } else {
+      // Update existing user
+      const index = this.users.findIndex((u) => u.id === this.user.id);
+      this.users[index] = { ...this.user };
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'User updated successfully',
+      });
     }
 
-    this.filterUsers();
-    // Hide modal using Bootstrap
-    const modal = document.getElementById('userModal');
-    if (modal) {
-      const bsModal = (window as any).bootstrap.Modal.getInstance(modal);
-      bsModal.hide();
-    }
+    this.users = [...this.users];
+    this.userDialog = false;
   }
 
-  deleteUser(id: number) {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.users = this.users.filter((u) => u.id !== id);
-      this.filterUsers();
-    }
+  confirmDelete() {
+    this.users = this.users.filter((u) => u.id !== this.user.id);
+    this.deleteUserDialog = false;
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'User deleted successfully',
+    });
   }
 }
