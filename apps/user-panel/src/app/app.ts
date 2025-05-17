@@ -8,4 +8,4 @@ import { AppComponent } from './app.component';
   imports: [CommonModule, RouterModule, AppComponent],
   exports: [AppComponent],
 })
-export class AdminModule {}
+export class UserModule {}

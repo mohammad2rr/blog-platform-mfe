@@ -5,7 +5,7 @@ const {
 module.exports = withModuleFederationPlugin({
   name: "adminPanel",
   exposes: {
-    "./Module": "./src/app/app.component.ts",
+    "./Module": "./src/app/app.ts",
   },
   shared: {
     "@angular/core": {
