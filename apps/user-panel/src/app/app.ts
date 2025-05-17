@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
     <div class="admin-container">
       <aside class="admin-sidebar">
         <div class="sidebar-header">
-          <h3>My Blog</h3>
+          <h3>User panel</h3>
         </div>
         <nav class="sidebar-nav">
           <ul>

@@ -10,7 +10,8 @@ import { CommonModule } from '@angular/common';
     <div class="admin-container">
       <aside class="admin-sidebar">
         <div class="sidebar-header">
-          <h3>My Blog</h3>
+          <h3>user panel</h3>
+          111111111111111
         </div>
         <nav class="sidebar-nav">
           <ul>
