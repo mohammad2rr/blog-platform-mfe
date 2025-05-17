@@ -13,6 +13,12 @@
   --info-color: #17a2b8;
   --light-color: #f8f9fa;
   --dark-color: #343a40;
+  --surface-card: #fff;
+  --surface-border: #dee2e6;
+  --surface-ground: #f8f9fa;
+  --surface-hover: #e9ecef;
+  --border-radius: 0.375rem;
+  --text-color: #333;
 }
 
 body {
@@ -30,7 +36,58 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 1rem;
+}
+
+/* Cards */
+.card {
+  background-color: var(--surface-card);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.p-button {
+  transition: all 0.2s;
+}
+
+.p-button:hover {
+  transform: translateY(-1px);
+}
+
+/* Forms */
+.p-inputtext {
+  width: 100%;
+}
+
+.p-inputtext:focus {
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* Tables */
+.p-datatable {
+  background-color: var(--surface-card);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.p-datatable .p-datatable-header {
+  background-color: var(--surface-card);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--surface-ground);
+  color: var(--text-color);
+  font-weight: 600;
 }
 
 /* Custom scrollbar */
@@ -39,16 +96,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--surface-ground);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--surface-border);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--surface-hover);
 }
 
 /* Utility classes */
@@ -119,7 +176,11 @@ body {
 /* Responsive utilities */
 @media (max-width: 768px) {
   .container {
-    padding: 0 10px;
+    padding: 0 0.5rem;
+  }
+
+  .p-datatable {
+    font-size: 0.875rem;
   }
 }
 

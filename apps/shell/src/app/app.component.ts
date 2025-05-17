@@ -18,11 +18,13 @@ import { NavigationService } from './services/navigation.service';
   providers: [NavigationService],
   template: `
     <div class="app-container">
-      <main class="content">
-        <app-header></app-header>
-        <router-outlet></router-outlet>
-        <app-footer></app-footer>
+      <app-header></app-header>
+      <main class="main-content">
+        <div class="container">
+          <router-outlet></router-outlet>
+        </div>
       </main>
+      <app-footer></app-footer>
     </div>
   `,
   styles: [
@@ -31,10 +33,25 @@ import { NavigationService } from './services/navigation.service';
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+        background-color: var(--surface-ground);
       }
-      .content {
+
+      .main-content {
         flex: 1;
         padding: 2rem 0;
+        background-color: var(--surface-ground);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          padding: 1rem 0;
+        }
       }
     `,
   ],
