@@ -140,6 +140,6 @@ import { RouterOutlet } from '@angular/router';
     `,
   ],
 })
-export class App {
+export class AppComponent {
   title = 'user-panel';
 }

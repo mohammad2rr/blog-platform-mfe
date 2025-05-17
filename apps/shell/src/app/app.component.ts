@@ -20,9 +20,7 @@ import { NavigationService } from './services/navigation.service';
     <div class="app-container">
       <app-header></app-header>
       <main class="main-content">
-        <div class="container">
-          <router-outlet></router-outlet>
-        </div>
+        <router-outlet></router-outlet>
       </main>
       <app-footer></app-footer>
     </div>
@@ -40,12 +38,6 @@ import { NavigationService } from './services/navigation.service';
         flex: 1;
         padding: 2rem 0;
         background-color: var(--surface-ground);
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
       }
 
       @media (max-width: 768px) {

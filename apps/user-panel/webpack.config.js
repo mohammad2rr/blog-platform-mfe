@@ -5,8 +5,7 @@ const {
 module.exports = withModuleFederation({
   name: "user-panel",
   exposes: {
-    "./UserProfile":
-      "./apps/user-panel/src/app/components/profile/profile.component.ts",
+    "./Module": "./src/app/app.component.ts",
   },
   shared: {
     "@angular/core": { singleton: true, strictVersion: true },

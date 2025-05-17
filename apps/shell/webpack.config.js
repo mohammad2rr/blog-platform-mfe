@@ -1,14 +1,14 @@
 const {
-  withModuleFederation,
+  withModuleFederationPlugin,
 } = require("@angular-architects/module-federation/webpack");
 
-module.exports = withModuleFederation({
+module.exports = withModuleFederationPlugin({
   name: "shell",
   exposes: {},
   remotes: {
-    "admin-panel": "http://localhost:4201/remoteEntry.js",
-    "user-panel": "http://localhost:4202/remoteEntry.js",
-    "public-panel": "http://localhost:4203/remoteEntry.js",
+    "public-panel": "public-panel@http://localhost:4203/remoteEntry.js",
+    "user-panel": "user-panel@http://localhost:4202/remoteEntry.js",
+    "admin-panel": "admin-panel@http://localhost:4201/remoteEntry.js",
   },
   shared: {
     "@angular/core": { singleton: true, strictVersion: true },

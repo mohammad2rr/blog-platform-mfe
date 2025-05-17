@@ -1,11 +1,11 @@
 const {
-  withModuleFederationPlugin,
+  withModuleFederation,
 } = require("@angular-architects/module-federation/webpack");
 
-module.exports = withModuleFederationPlugin({
-  name: "adminPanel",
+module.exports = withModuleFederation({
+  name: "admin-panel",
   exposes: {
-    "./Module": "./src/app/app.ts",
+    "./Module": "./src/app/app.component.ts",
   },
   shared: {
     "@angular/core": { singleton: true, strictVersion: true },

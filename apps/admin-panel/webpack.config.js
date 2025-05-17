@@ -5,8 +5,7 @@ const {
 module.exports = withModuleFederation({
   name: "admin-panel",
   exposes: {
-    "./AdminDashboard":
-      "./apps/admin-panel/src/app/components/dashboard/dashboard.component.ts",
+    "./Module": "./src/app/app.component.ts",
   },
   shared: {
     "@angular/core": { singleton: true, strictVersion: true },
