@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
-@NgModule({
-  declarations: [],
+@Component({
+  selector: 'user-panel-wrapper',
+  standalone: true,
   imports: [CommonModule, RouterModule, AppComponent],
-  exports: [AppComponent],
+  template: '<app-user-panel></app-user-panel>',
 })
 export class UserModule {}

@@ -42,4 +42,6 @@ import { NavigationService } from './services/navigation.service';
     `,
   ],
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private navigationService: NavigationService) {}
+}

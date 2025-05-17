@@ -6,9 +6,9 @@ module.exports = withModuleFederationPlugin({
   name: "shell",
   exposes: {},
   remotes: {
+    publicPanel: "publicPanel@http://localhost:4203/remoteEntry.js",
     adminPanel: "adminPanel@http://localhost:4201/remoteEntry.js",
     userPanel: "userPanel@http://localhost:4202/remoteEntry.js",
-    publicPanel: "publicPanel@http://localhost:4203/remoteEntry.js",
   },
   shared: {
     "@angular/core": {
