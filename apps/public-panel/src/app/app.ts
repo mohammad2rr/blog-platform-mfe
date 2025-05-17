@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { routes } from './app.routes';
 
 @NgModule({
-  declarations: [],
   imports: [CommonModule, RouterModule.forChild(routes), AppComponent],
   exports: [AppComponent],
 })

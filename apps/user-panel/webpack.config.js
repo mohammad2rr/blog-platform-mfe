@@ -4,8 +4,9 @@ const {
 
 module.exports = withModuleFederationPlugin({
   name: "userPanel",
+  filename: "remoteEntry.js",
   exposes: {
-    "./Module": "./src/app/app.component.ts",
+    "./Module": "./src/app/app.ts",
   },
   shared: {
     "@angular/core": {

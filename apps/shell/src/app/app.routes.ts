@@ -12,6 +12,15 @@ export const routes: Routes = [
       }).then((m) => m.PublicModule),
   },
   {
+    path: 'blog',
+    loadChildren: () =>
+      loadRemoteModule({
+        type: 'module',
+        remoteEntry: 'http://localhost:4203/remoteEntry.js',
+        exposedModule: './Module',
+      }).then((m) => m.PublicModule),
+  },
+  {
     path: 'admin',
     loadChildren: () =>
       loadRemoteModule({

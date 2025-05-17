@@ -20,13 +20,8 @@ import { NavigationService } from '../../services/navigation.service';
           <a routerLink="/blog" routerLinkActive="active">Blog</a>
         </div>
         <div class="nav-right">
-          <ng-container *ngIf="!isLoggedIn">
-            <a routerLink="/user" routerLinkActive="active">Profile</a>
-            <a routerLink="/admin" routerLinkActive="active">Admin</a>
-          </ng-container>
-          <ng-container *ngIf="isLoggedIn">
-            <button (click)="logout()">Logout</button>
-          </ng-container>
+          <a routerLink="/user" routerLinkActive="active">Profile</a>
+          <a routerLink="/admin" routerLinkActive="active">Admin</a>
         </div>
       </nav>
     </header>
@@ -36,6 +31,9 @@ import { NavigationService } from '../../services/navigation.service';
       .header {
         background-color: var(--surface-card);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
       }
 
       .nav-container {
@@ -59,44 +57,24 @@ import { NavigationService } from '../../services/navigation.service';
         color: var(--text-color);
         font-weight: 500;
         transition: color 0.2s;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
       }
 
       a:hover {
         color: var(--primary-color);
+        background-color: var(--surface-hover);
       }
 
       a.active {
         color: var(--primary-color);
-      }
-
-      button {
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 4px;
-        background-color: var(--primary-color);
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
-
-      button:hover {
-        background-color: var(--primary-600);
+        background-color: var(--surface-hover);
       }
     `,
   ],
 })
 export class HeaderComponent implements OnInit {
-  isLoggedIn = false;
-
   constructor(private navigationService: NavigationService) {}
 
-  ngOnInit() {
-    // TODO: Implement auth check
-    this.isLoggedIn = false;
-  }
-
-  logout() {
-    // TODO: Implement logout
-    this.isLoggedIn = false;
-  }
+  ngOnInit() {}
 }

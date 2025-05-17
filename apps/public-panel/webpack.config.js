@@ -4,6 +4,7 @@ const {
 
 module.exports = withModuleFederationPlugin({
   name: "publicPanel",
+  filename: "remoteEntry.js",
   exposes: {
     "./Module": "./src/app/app.ts",
   },
