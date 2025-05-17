@@ -1,17 +1,33 @@
 const {
-  withModuleFederation,
+  withModuleFederationPlugin,
 } = require("@angular-architects/module-federation/webpack");
 
-module.exports = withModuleFederation({
-  name: "public-panel",
+module.exports = withModuleFederationPlugin({
+  name: "publicPanel",
   exposes: {
-    "./app.component": "./src/app/app.component.ts",
+    "./Module": "./src/app/app.ts",
   },
   shared: {
-    "@angular/core": { singleton: true, strictVersion: true },
-    "@angular/common": { singleton: true, strictVersion: true },
-    "@angular/router": { singleton: true, strictVersion: true },
-    "@angular/forms": { singleton: true, strictVersion: true },
-    rxjs: { singleton: true, strictVersion: true },
+    "@angular/core": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^20.0.0-next.0",
+    },
+    "@angular/common": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^20.0.0-next.0",
+    },
+    "@angular/router": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^20.0.0-next.0",
+    },
+    "@angular/forms": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "^20.0.0-next.0",
+    },
+    rxjs: { singleton: true, strictVersion: true, requiredVersion: "~7.8.0" },
   },
 });

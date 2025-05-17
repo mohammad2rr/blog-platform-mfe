@@ -8,8 +8,8 @@ export const routes: Routes = [
       loadRemoteModule({
         type: 'module',
         remoteEntry: 'http://localhost:4203/remoteEntry.js',
-        exposedModule: './app.component',
-      }).then((m) => m.AppComponent),
+        exposedModule: './Module',
+      }).then((m) => m.PublicModule),
   },
   {
     path: 'admin',
@@ -17,8 +17,8 @@ export const routes: Routes = [
       loadRemoteModule({
         type: 'module',
         remoteEntry: 'http://localhost:4201/remoteEntry.js',
-        exposedModule: './app.component',
-      }).then((m) => m.AppComponent),
+        exposedModule: './Module',
+      }).then((m) => m.AdminModule),
   },
   {
     path: 'user',
@@ -26,8 +26,8 @@ export const routes: Routes = [
       loadRemoteModule({
         type: 'module',
         remoteEntry: 'http://localhost:4202/remoteEntry.js',
-        exposedModule: './app.component',
-      }).then((m) => m.AppComponent),
+        exposedModule: './Module',
+      }).then((m) => m.UserModule),
   },
   {
     path: '**',
