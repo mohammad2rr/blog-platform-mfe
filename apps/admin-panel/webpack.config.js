@@ -6,28 +6,28 @@ module.exports = withModuleFederationPlugin({
   name: "adminPanel",
   filename: "remoteEntry.js",
   exposes: {
-    "./Module": "./src/app/app.ts",
+    "./Component": "./src/app/app.component.ts",
   },
   shared: {
     "@angular/core": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     "@angular/common": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     "@angular/router": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     "@angular/forms": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     rxjs: { singleton: true, strictVersion: true, requiredVersion: "~7.8.0" },
   },

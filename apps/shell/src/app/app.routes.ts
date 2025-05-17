@@ -4,39 +4,39 @@ import { loadRemoteModule } from '@angular-architects/module-federation';
 export const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
+    loadComponent: () =>
       loadRemoteModule({
         type: 'module',
         remoteEntry: 'http://localhost:4203/remoteEntry.js',
-        exposedModule: './Module',
-      }).then((m) => m.PublicModule),
+        exposedModule: './Component',
+      }).then((m) => m.AppComponent),
   },
   {
     path: 'blog',
-    loadChildren: () =>
+    loadComponent: () =>
       loadRemoteModule({
         type: 'module',
         remoteEntry: 'http://localhost:4203/remoteEntry.js',
-        exposedModule: './Module',
-      }).then((m) => m.PublicModule),
+        exposedModule: './Component',
+      }).then((m) => m.AppComponent),
   },
   {
     path: 'admin',
-    loadChildren: () =>
+    loadComponent: () =>
       loadRemoteModule({
         type: 'module',
         remoteEntry: 'http://localhost:4201/remoteEntry.js',
-        exposedModule: './Module',
-      }).then((m) => m.AdminModule),
+        exposedModule: './Component',
+      }).then((m) => m.AppComponent),
   },
   {
     path: 'user',
-    loadChildren: () =>
+    loadComponent: () =>
       loadRemoteModule({
         type: 'module',
         remoteEntry: 'http://localhost:4202/remoteEntry.js',
-        exposedModule: './Module',
-      }).then((m) => m.UserModule),
+        exposedModule: './Component',
+      }).then((m) => m.AppComponent),
   },
   {
     path: '**',
