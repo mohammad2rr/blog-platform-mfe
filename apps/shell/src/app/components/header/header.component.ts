@@ -1,109 +1,102 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationService } from '../../services/navigation.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" (click)="navigateTo('/')">Blog Platform</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" (click)="navigateToPublic('/')">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" (click)="navigateToPublic('/blog')">Blog</a>
-            </li>
-            <li class="nav-item" *ngIf="isLoggedIn">
-              <a class="nav-link" (click)="navigateToUser('/profile')"
-                >Profile</a
-              >
-            </li>
-            <li class="nav-item" *ngIf="isAdmin">
-              <a class="nav-link" (click)="navigateToAdmin('/dashboard')"
-                >Admin</a
-              >
-            </li>
-          </ul>
-          <div class="d-flex">
-            <button
-              class="btn btn-outline-light me-2"
-              *ngIf="!isLoggedIn"
-              (click)="navigateTo('/login')"
-            >
-              Login
-            </button>
-            <button
-              class="btn btn-outline-light"
-              *ngIf="!isLoggedIn"
-              (click)="navigateTo('/register')"
-            >
-              Register
-            </button>
-            <button
-              class="btn btn-outline-light"
-              *ngIf="isLoggedIn"
-              (click)="logout()"
-            >
-              Logout
-            </button>
-          </div>
+    <header class="header">
+      <nav class="nav-container">
+        <div class="nav-left">
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Home</a
+          >
+          <a routerLink="/blog" routerLinkActive="active">Blog</a>
         </div>
-      </div>
-    </nav>
+        <div class="nav-right">
+          <ng-container *ngIf="!isLoggedIn">
+            <a routerLink="/user" routerLinkActive="active">Profile</a>
+            <a routerLink="/admin" routerLinkActive="active">Admin</a>
+          </ng-container>
+          <ng-container *ngIf="isLoggedIn">
+            <button (click)="logout()">Logout</button>
+          </ng-container>
+        </div>
+      </nav>
+    </header>
   `,
   styles: [
     `
-      .navbar-brand,
-      .nav-link {
-        cursor: pointer;
+      .header {
+        background-color: var(--surface-card);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
-      .nav-link:hover {
-        color: #fff !important;
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-left,
+      .nav-right {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
+      a {
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      a:hover {
+        color: var(--primary-color);
+      }
+
+      a.active {
+        color: var(--primary-color);
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        background-color: var(--primary-color);
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      button:hover {
+        background-color: var(--primary-600);
       }
     `,
   ],
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
-  isAdmin = false;
 
   constructor(private navigationService: NavigationService) {}
 
-  ngOnInit(): void {
-    // TODO: Implement auth service and check login status
+  ngOnInit() {
+    // TODO: Implement auth check
+    this.isLoggedIn = false;
   }
 
-  navigateTo(path: string): void {
-    this.navigationService.navigateTo(path);
-  }
-
-  navigateToAdmin(path: string): void {
-    this.navigationService.navigateToAdmin(path);
-  }
-
-  navigateToUser(path: string): void {
-    this.navigationService.navigateToUser(path);
-  }
-
-  navigateToPublic(path: string): void {
-    this.navigationService.navigateToPublic(path);
-  }
-
-  logout(): void {
-    // TODO: Implement logout functionality
+  logout() {
+    // TODO: Implement logout
+    this.isLoggedIn = false;
   }
 }

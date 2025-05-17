@@ -10,6 +10,10 @@ export const APP_ROUTES: Routes = [
     children: HOME_ROUTES,
   },
   {
+    path: 'blog',
+    children: HOME_ROUTES,
+  },
+  {
     path: 'post',
     children: POST_DETAIL_ROUTES,
   },
