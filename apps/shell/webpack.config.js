@@ -4,7 +4,6 @@ const {
 
 module.exports = withModuleFederationPlugin({
   name: "shell",
-  exposes: {},
   remotes: {
     publicPanel: "publicPanel@http://localhost:4203/remoteEntry.js",
     adminPanel: "adminPanel@http://localhost:4201/remoteEntry.js",
@@ -14,32 +13,32 @@ module.exports = withModuleFederationPlugin({
     "@angular/core": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     "@angular/common": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     "@angular/router": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     "@angular/forms": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     "@angular/material": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     "@angular/cdk": {
       singleton: true,
       strictVersion: true,
-      requiredVersion: "^20.0.0-next.0",
+      requiredVersion: "^17.2.0",
     },
     rxjs: { singleton: true, strictVersion: true, requiredVersion: "~7.8.0" },
     bootstrap: {
