@@ -25,7 +25,12 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["apps/shell/src/styles.css"],
+            "styles": [
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/shell/src/styles.scss"
+            ],
             "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
           "configurations": {
@@ -78,7 +83,12 @@
                 "input": "apps/shell/public"
               }
             ],
-            "styles": ["apps/shell/src/styles.css"]
+            "styles": [
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/shell/src/styles.scss"
+            ]
           }
         }
       }
@@ -105,7 +115,12 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["apps/admin-panel/src/styles.css"],
+            "styles": [
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/admin-panel/src/styles.scss"
+            ],
             "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
           "configurations": {
@@ -158,7 +173,12 @@
                 "input": "apps/admin-panel/public"
               }
             ],
-            "styles": ["apps/admin-panel/src/styles.css"]
+            "styles": [
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/admin-panel/src/styles.scss"
+            ]
           }
         }
       }
@@ -185,7 +205,12 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["apps/user-panel/src/styles.css"],
+            "styles": [
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/user-panel/src/styles.scss"
+            ],
             "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
           "configurations": {
@@ -238,7 +263,12 @@
                 "input": "apps/user-panel/public"
               }
             ],
-            "styles": ["apps/user-panel/src/styles.css"]
+            "styles": [
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/user-panel/src/styles.scss"
+            ]
           }
         }
       }
@@ -265,7 +295,12 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["apps/public-panel/src/styles.css"],
+            "styles": [
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/public-panel/src/styles.scss"
+            ],
             "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
           "configurations": {
@@ -318,7 +353,12 @@
                 "input": "apps/public-panel/public"
               }
             ],
-            "styles": ["apps/public-panel/src/styles.css"]
+            "styles": [
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/public-panel/src/styles.scss"
+            ]
           }
         }
       }
