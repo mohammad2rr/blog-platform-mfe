@@ -1,8 +1,8 @@
 const {
-  withModuleFederationPlugin,
+  withModuleFederation,
 } = require("@angular-architects/module-federation/webpack");
 
-module.exports = withModuleFederationPlugin({
+module.exports = withModuleFederation({
   name: "shell",
   exposes: {},
   remotes: {

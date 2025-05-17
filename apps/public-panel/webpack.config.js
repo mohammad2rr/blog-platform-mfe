@@ -5,7 +5,7 @@ const {
 module.exports = withModuleFederation({
   name: "public-panel",
   exposes: {
-    "./Module": "./src/app/app.component.ts",
+    "./app.component": "./src/app/app.component.ts",
   },
   shared: {
     "@angular/core": { singleton: true, strictVersion: true },
