@@ -90,7 +90,7 @@ interface Post {
 
       <!-- Comments Section -->
       <div class="comments-section">
-        <h3 class="mb-4">Comments ({{ post?.comments.length }})</h3>
+        <h3 class="mb-4">Comments ({{ post?.comments?.length || 0 }})</h3>
 
         <!-- Comment Form -->
         <div class="comment-form mb-5">

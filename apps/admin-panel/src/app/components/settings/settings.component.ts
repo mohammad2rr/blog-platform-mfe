@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextarea } from 'primeng/inputtextarea';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -50,7 +50,7 @@ interface SocialSettings {
     FormsModule,
     CardModule,
     InputTextModule,
-    InputTextarea,
+    InputTextareaModule,
     ButtonModule,
     ToastModule,
     TabViewModule,

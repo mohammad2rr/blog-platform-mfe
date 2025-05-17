@@ -27,8 +27,8 @@ interface TeamMember {
             <div class="col-lg-6 mb-4 mb-lg-0">
               <h1 class="display-4 mb-4">About Our Blog</h1>
               <p class="lead mb-4">
-                Welcome to our tech blog, where we share insights, tutorials, and
-                stories about software development, design, and technology.
+                Welcome to our tech blog, where we share insights, tutorials,
+                and stories about software development, design, and technology.
               </p>
               <p class="mb-4">
                 Our mission is to help developers and tech enthusiasts stay
@@ -67,10 +67,7 @@ interface TeamMember {
         <div class="container">
           <h2 class="text-center mb-5">Meet Our Team</h2>
           <div class="row">
-            <div
-              *ngFor="let member of teamMembers"
-              class="col-md-4 mb-4"
-            >
+            <div *ngFor="let member of teamMembers" class="col-md-4 mb-4">
               <div class="card h-100">
                 <img
                   [src]="member.image"
@@ -121,14 +118,14 @@ interface TeamMember {
             <div class="col-lg-6 mb-4 mb-lg-0">
               <h2 class="mb-4">Get in Touch</h2>
               <p class="mb-4">
-                Have questions, suggestions, or want to collaborate? We'd love to
-                hear from you! Fill out the form and we'll get back to you as
+                Have questions, suggestions, or want to collaborate? We'd love
+                to hear from you! Fill out the form and we'll get back to you as
                 soon as possible.
               </p>
               <div class="contact-info">
                 <div class="d-flex align-items-center mb-3">
                   <i class="fas fa-envelope me-3 text-primary"></i>
-                  <span>contact@blog.com</span>
+                  <span>contact&#64;blog.com</span>
                 </div>
                 <div class="d-flex align-items-center mb-3">
                   <i class="fas fa-phone me-3 text-primary"></i>

@@ -10,7 +10,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextarea } from 'primeng/inputtextarea';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
@@ -20,6 +20,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 interface Category {
   id: number;
@@ -40,7 +41,7 @@ interface Tag {
     ReactiveFormsModule,
     CardModule,
     InputTextModule,
-    InputTextarea,
+    InputTextareaModule,
     ButtonModule,
     DropdownModule,
     ToastModule,
@@ -48,6 +49,7 @@ interface Tag {
     InputSwitchModule,
     TagModule,
     ConfirmDialogModule,
+    MultiSelectModule,
   ],
   providers: [MessageService, ConfirmationService],
   template: `
@@ -124,14 +126,13 @@ interface Tag {
 
               <div class="form-field">
                 <label for="tags">Tags</label>
-                <p-dropdown
+                <p-multiSelect
                   id="tags"
                   [options]="availableTags"
                   formControlName="tags"
                   optionLabel="name"
-                  [multiple]="true"
                   placeholder="Select tags"
-                ></p-dropdown>
+                ></p-multiSelect>
               </div>
 
               <div class="form-field">

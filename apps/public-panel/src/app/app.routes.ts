@@ -26,3 +26,5 @@ export const APP_ROUTES: Routes = [
     redirectTo: '',
   },
 ];
+
+export const routes = APP_ROUTES;

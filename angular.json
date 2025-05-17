@@ -11,18 +11,22 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "browser": "apps/shell/src/main.ts",
+            "outputPath": "dist/shell",
+            "index": "apps/shell/src/index.html",
+            "main": "apps/shell/src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "apps/shell/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "apps/shell/public"
+                "input": "apps/shell/public",
+                "output": "/assets/"
               }
             ],
-            "styles": ["apps/shell/src/styles.css"]
+            "styles": ["apps/shell/src/styles.css"],
+            "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
           "configurations": {
             "production": {
@@ -49,7 +53,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "shell:build:production"
@@ -61,10 +65,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "apps/shell/tsconfig.spec.json",
@@ -87,18 +91,22 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "browser": "apps/admin-panel/src/main.ts",
+            "outputPath": "dist/admin-panel",
+            "index": "apps/admin-panel/src/index.html",
+            "main": "apps/admin-panel/src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "apps/admin-panel/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "apps/admin-panel/public"
+                "input": "apps/admin-panel/public",
+                "output": "/assets/"
               }
             ],
-            "styles": ["apps/admin-panel/src/styles.css"]
+            "styles": ["apps/admin-panel/src/styles.css"],
+            "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
           "configurations": {
             "production": {
@@ -125,7 +133,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "admin-panel:build:production"
@@ -137,10 +145,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "apps/admin-panel/tsconfig.spec.json",
@@ -163,18 +171,22 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "browser": "apps/user-panel/src/main.ts",
+            "outputPath": "dist/user-panel",
+            "index": "apps/user-panel/src/index.html",
+            "main": "apps/user-panel/src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "apps/user-panel/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "apps/user-panel/public"
+                "input": "apps/user-panel/public",
+                "output": "/assets/"
               }
             ],
-            "styles": ["apps/user-panel/src/styles.css"]
+            "styles": ["apps/user-panel/src/styles.css"],
+            "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
           "configurations": {
             "production": {
@@ -201,7 +213,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "user-panel:build:production"
@@ -213,10 +225,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "apps/user-panel/tsconfig.spec.json",
@@ -239,18 +251,22 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "browser": "apps/public-panel/src/main.ts",
+            "outputPath": "dist/public-panel",
+            "index": "apps/public-panel/src/index.html",
+            "main": "apps/public-panel/src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "apps/public-panel/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "apps/public-panel/public"
+                "input": "apps/public-panel/public",
+                "output": "/assets/"
               }
             ],
-            "styles": ["apps/public-panel/src/styles.css"]
+            "styles": ["apps/public-panel/src/styles.css"],
+            "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
           "configurations": {
             "production": {
@@ -277,7 +293,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "public-panel:build:production"
@@ -289,10 +305,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "apps/public-panel/tsconfig.spec.json",

@@ -5,7 +5,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextarea } from 'primeng/inputtextarea';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
@@ -37,7 +37,7 @@ interface Comment {
     ButtonModule,
     DialogModule,
     InputTextModule,
-    InputTextarea,
+    InputTextareaModule,
     ToastModule,
     TagModule,
     DropdownModule,
@@ -350,7 +350,7 @@ export class CommentsComponent implements OnInit {
     }
   }
 
-  getStatusSeverity(status: string): string {
+  getStatusSeverity(status: string): 'success' | 'warning' | 'danger' | 'info' {
     switch (status) {
       case 'approved':
         return 'success';
