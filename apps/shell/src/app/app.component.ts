@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavigationService } from './services/navigation.service';
@@ -8,7 +8,13 @@ import { NavigationService } from './services/navigation.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    HeaderComponent,
+    FooterComponent,
+  ],
   providers: [NavigationService],
   template: `
     <div class="app-container">
