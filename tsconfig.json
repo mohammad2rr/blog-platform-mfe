@@ -34,28 +34,28 @@
   "files": [],
   "references": [
     {
-      "path": "./projects/shell/tsconfig.app.json"
+      "path": "./apps/shell/tsconfig.app.json"
     },
     {
-      "path": "./projects/shell/tsconfig.spec.json"
+      "path": "./apps/shell/tsconfig.spec.json"
     },
     {
-      "path": "./projects/admin-panel/tsconfig.app.json"
+      "path": "./apps/admin-panel/tsconfig.app.json"
     },
     {
-      "path": "./projects/admin-panel/tsconfig.spec.json"
+      "path": "./apps/admin-panel/tsconfig.spec.json"
     },
     {
-      "path": "./projects/user-panel/tsconfig.app.json"
+      "path": "./apps/user-panel/tsconfig.app.json"
     },
     {
-      "path": "./projects/user-panel/tsconfig.spec.json"
+      "path": "./apps/user-panel/tsconfig.spec.json"
     },
     {
-      "path": "./projects/public-panel/tsconfig.app.json"
+      "path": "./apps/public-panel/tsconfig.app.json"
     },
     {
-      "path": "./projects/public-panel/tsconfig.spec.json"
+      "path": "./apps/public-panel/tsconfig.spec.json"
     }
   ]
 }
