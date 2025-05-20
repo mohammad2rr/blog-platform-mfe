@@ -6,7 +6,7 @@ module.exports = withModuleFederationPlugin({
   name: "userPanel",
   filename: "remoteEntry.js",
   exposes: {
-    "./Module": "./src/app/app.ts",
+    "./UserModule": "./src/app/app.routes.ts",
   },
   shared: {
     "@angular/core": {

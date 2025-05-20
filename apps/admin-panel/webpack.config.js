@@ -6,7 +6,7 @@ module.exports = withModuleFederationPlugin({
   name: "adminPanel",
   filename: "remoteEntry.js",
   exposes: {
-    "./Module": "./src/app/app.ts",
+    "./AdminModule": "./src/app/app.routes.ts",
   },
   shared: {
     "@angular/core": {
