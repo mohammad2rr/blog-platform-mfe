@@ -19,4 +19,4 @@ import { routes } from './app.routes';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AdminModule {}
