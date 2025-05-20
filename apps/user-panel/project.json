@@ -15,6 +15,10 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/user-panel/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
+        "allowedCommonJsDependencies": [
+          "bootstrap",
+          "@fortawesome/fontawesome-free"
+        ],
         "assets": [
           "apps/user-panel/src/favicon.ico",
           "apps/user-panel/src/assets"
@@ -61,6 +65,16 @@
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "browserTarget": "user-panel:build",
+        "port": 4202,
+        "host": "localhost",
+        "liveReload": true,
+        "baseHref": "/user-panel/",
+        "headers": {
+          "Content-Security-Policy": "default-src 'self'; font-src 'self' data: https: http:; style-src 'self' 'unsafe-inline' https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:; img-src 'self' data: https: http:; connect-src 'self' https: http:;"
+        }
+      },
       "configurations": {
         "production": {
           "browserTarget": "user-panel:build:production"

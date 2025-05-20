@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+@import "primeng/resources/primeng.min.css";
 @import "primeicons/primeicons.css";
-@import "bootstrap/scss/bootstrap";
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 
 :root {
   --primary-color: #007bff;
@@ -22,9 +23,8 @@
 }
 
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   line-height: 1.5;
   color: #333;
   background-color: #fff;
@@ -44,9 +44,7 @@ body {
   background-color: var(--surface-card);
   border-radius: var(--border-radius);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card:hover {

@@ -1,10 +1,21 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { PrimeIcons } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { RippleModule } from 'primeng/ripple';
 
 @Component({
   selector: 'app-user-panel',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    ButtonModule,
+    InputTextModule,
+    RippleModule,
+  ],
   template: `
     <div class="admin-container">
       <aside class="admin-sidebar">
