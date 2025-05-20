@@ -11,7 +11,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-architects/module-federation:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/shell",
             "index": "apps/shell/src/index.html",
@@ -26,10 +26,17 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "apps/shell/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ],
             "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
@@ -58,13 +65,13 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-architects/module-federation:serve",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "shell:build:production"
+              "browserTarget": "shell:build:production"
             },
             "development": {
-              "buildTarget": "shell:build:development"
+              "browserTarget": "shell:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,10 +91,17 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "apps/shell/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ]
           }
         }
@@ -101,7 +115,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-architects/module-federation:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/admin-panel",
             "index": "apps/admin-panel/src/index.html",
@@ -116,10 +130,17 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "apps/admin-panel/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ],
             "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
@@ -148,13 +169,13 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-architects/module-federation:serve",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "admin-panel:build:production"
+              "browserTarget": "admin-panel:build:production"
             },
             "development": {
-              "buildTarget": "admin-panel:build:development"
+              "browserTarget": "admin-panel:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -174,10 +195,17 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "apps/admin-panel/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ]
           }
         }
@@ -191,7 +219,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-architects/module-federation:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/user-panel",
             "index": "apps/user-panel/src/index.html",
@@ -206,10 +234,17 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "apps/user-panel/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ],
             "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
@@ -238,13 +273,13 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-architects/module-federation:serve",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "user-panel:build:production"
+              "browserTarget": "user-panel:build:production"
             },
             "development": {
-              "buildTarget": "user-panel:build:development"
+              "browserTarget": "user-panel:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -264,10 +299,17 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "apps/user-panel/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ]
           }
         }
@@ -281,7 +323,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-architects/module-federation:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/public-panel",
             "index": "apps/public-panel/src/index.html",
@@ -296,10 +338,17 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "apps/public-panel/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ],
             "allowedCommonJsDependencies": ["quill", "quill-delta"]
           },
@@ -328,13 +377,13 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-architects/module-federation:serve",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "public-panel:build:production"
+              "browserTarget": "public-panel:build:production"
             },
             "development": {
-              "buildTarget": "public-panel:build:development"
+              "browserTarget": "public-panel:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -354,10 +403,17 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "apps/public-panel/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ]
           }
         }
