@@ -70,9 +70,9 @@
         "port": 4202,
         "host": "localhost",
         "liveReload": true,
-        "baseHref": "/user-panel/",
         "headers": {
-          "Content-Security-Policy": "default-src 'self'; font-src 'self' data: https: http:; style-src 'self' 'unsafe-inline' https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:; img-src 'self' data: https: http:; connect-src 'self' https: http:;"
+          "Content-Security-Policy": "default-src 'self'; font-src 'self' data: https: http:; style-src 'self' 'unsafe-inline' https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:; img-src 'self' data: https: http:; connect-src 'self' https: http:;",
+          "Content-Type": "text/css; charset=utf-8"
         }
       },
       "configurations": {
