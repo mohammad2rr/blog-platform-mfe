@@ -7,7 +7,7 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4203/remoteEntry.js',
+        remoteEntry: 'publicPanel@http://localhost:4203/remoteEntry.js',
         exposedModule: './PublicModule',
       }).then((m) => m.PublicModule),
   },
@@ -16,7 +16,7 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4203/remoteEntry.js',
+        remoteEntry: 'publicPanel@http://localhost:4203/remoteEntry.js',
         exposedModule: './PublicModule',
       }).then((m) => m.PublicModule),
   },
@@ -25,7 +25,7 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4201/remoteEntry.js',
+        remoteEntry: 'adminPanel@http://localhost:4201/remoteEntry.js',
         exposedModule: './AdminModule',
       }).then((m) => m.AdminModule),
   },
@@ -34,7 +34,7 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4202/remoteEntry.js',
+        remoteEntry: 'userPanel@http://localhost:4202/remoteEntry.js',
         exposedModule: './UserModule',
       }).then((m) => m.UserModule),
   },
